@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" width="860" height="330" font-family="Segoe UI Variable, Segoe UI, sans-serif" fill="currentColor" role="img" aria-label="Sovereign and transient posture compared">
+<style>svg{color:#1a1a1a}@media (prefers-color-scheme:dark){svg{color:#e8e8e8}}text{font-size:13px}.h{font-size:15px;font-weight:600}.s{font-size:11px;opacity:.75}.box{fill:none;stroke:currentColor;stroke-width:1.25;opacity:.55}.ax{stroke:currentColor;stroke-width:1.25;opacity:.55}.tick{stroke:currentColor;stroke-width:1.25;opacity:.55}</style>
+
+<text class="h" x="16" y="26">Posture decides density, labelling and control size</text>
+<text class="s" x="16" y="46">UI-GLOBAL-001. Classify the surface before designing it.</text>
+<rect class="box" x="16" y="62" width="404" height="246" rx="6"/>
+<text class="h" x="34" y="88">SOVEREIGN</text>
+<text class="s" x="34" y="107">Inhabited for hours. The user becomes expert.</text>
+<circle cx="38" cy="130" r="2.5" opacity=".55"/>
+<text x="50" y="134">Full screen, persistent, multi-pane</text>
+<circle cx="38" cy="157" r="2.5" opacity=".55"/>
+<text x="50" y="161">Dense layout is legitimate</text>
+<circle cx="38" cy="184" r="2.5" opacity=".55"/>
+<text x="50" y="188">Auxiliary controls may be small and close</text>
+<circle cx="38" cy="211" r="2.5" opacity=".55"/>
+<text x="50" y="215">Colour in small accents, not large splashes</text>
+<circle cx="38" cy="238" r="2.5" opacity=".55"/>
+<text x="50" y="242">Icon-only controls acceptable — seen daily</text>
+<circle cx="38" cy="265" r="2.5" opacity=".55"/>
+<text x="50" y="269">Optimise for the intermediate, not first run</text>
+<rect class="box" x="440" y="62" width="404" height="246" rx="6"/>
+<text class="h" x="458" y="88">TRANSIENT</text>
+<text class="s" x="458" y="107">Invoked, used, dismissed. Never becomes familiar.</text>
+<circle cx="462" cy="130" r="2.5" opacity=".55"/>
+<text x="474" y="134">Appears on demand, leaves quickly</text>
+<circle cx="462" cy="157" r="2.5" opacity=".55"/>
+<text x="474" y="161">Generous spacing is legitimate</text>
+<circle cx="462" cy="184" r="2.5" opacity=".55"/>
+<text x="474" y="188">Controls large and clearly separated</text>
+<circle cx="462" cy="211" r="2.5" opacity=".55"/>
+<text x="474" y="215">Labels in words, not ambiguous glyphs</text>
+<circle cx="462" cy="238" r="2.5" opacity=".55"/>
+<text x="474" y="242">Every action spelled out</text>
+<circle cx="462" cy="265" r="2.5" opacity=".55"/>
+<text x="474" y="269">Optimise for someone who has forgotten it</text>
+<text class="s" x="16" y="324">Applying either column to the other posture is the most common structural error this oracle catches.</text>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 300" width="860" height="300" font-family="Segoe UI Variable, Segoe UI, sans-serif" fill="currentColor" role="img" aria-label="Human response-time deadlines on a logarithmic scale">
+<style>svg{color:#1a1a1a}@media (prefers-color-scheme:dark){svg{color:#e8e8e8}}text{font-size:13px}.h{font-size:15px;font-weight:600}.s{font-size:11px;opacity:.75}.box{fill:none;stroke:currentColor;stroke-width:1.25;opacity:.55}.ax{stroke:currentColor;stroke-width:1.25;opacity:.55}.tick{stroke:currentColor;stroke-width:1.25;opacity:.55}</style>
+
+<text class="h" x="16" y="26">What the system owes the user, by elapsed time</text>
+<text class="s" x="16" y="46">§14. Orders of magnitude, not precise thresholds.</text>
+<line class="ax" x1="60" y1="96" x2="810" y2="96"/>
+<line class="tick" x1="60" y1="88" x2="60" y2="104"/>
+<text class="h" x="60" y="78">0.1 s</text>
+<text x="60" y="128">Acknowledge</text>
+<text class="s" x="60" y="148">Anything slower breaks the sense that the</text>
+<text class="s" x="60" y="164">click caused the result.</text>
+<line class="tick" x1="250" y1="88" x2="250" y2="104"/>
+<text class="h" x="250" y="78">~1 s</text>
+<text x="250" y="128">Stay conversational</text>
+<text class="s" x="250" y="148">A gap longer than a turn in conversation. Show</text>
+<text class="s" x="250" y="164">the busy state.</text>
+<line class="tick" x1="440" y1="88" x2="440" y2="104"/>
+<text class="h" x="440" y="78">10 s</text>
+<text x="440" y="128">Attention leaves</text>
+<text class="s" x="440" y="148">Past the limit of held attention. Progress and</text>
+<text class="s" x="440" y="164">an estimate, or the user must rebuild context.</text>
+<line class="tick" x1="700" y1="88" x2="700" y2="104"/>
+<text class="h" x="700" y="78">> 10 s</text>
+<text x="700" y="128">Give the work back</text>
+<text class="s" x="700" y="148">Determinate progress, a time estimate, a</text>
+<text class="s" x="700" y="164">cancel, and an interactive UI meanwhile.</text>
+<text class="s" x="16" y="286">Derived from published durations of perceptual and cognitive processes; see Appendix A. Each deadline is roughly ten times the one before it.</text>
+</svg>
