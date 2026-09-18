@@ -53,7 +53,7 @@ Cooper says so directly.
 
 **Positions**, both from
 [Typography in Windows](https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/typography)
-(`ms.date` 2021-06-24, updated 2026-07-14):
+(Microsoft Learn displays “Last updated” 2026-04-14; rechecked 2026-09-18):
 
 - "Typography best practices in Windows 11" table, *Truncation* row:
   *"Use ellipses in most cases; clipping is only used in rare cases."*
@@ -113,7 +113,7 @@ Split by layer, which is the oracle's general legacy policy:
 
 - **Whether/when** a dialog appears → Tier 1 wins.
 - **Button semantics, commit/cancel wording, Enter/Escape, modeless behaviour**
-  → Tier 3 is STILL RELEVANT and is adopted, because nothing current supersedes
+  → Tier 3 is `STILL_VALID_INTERACTION_PRINCIPLE` and is adopted, because nothing current supersedes
   it and the rules are about interaction, not appearance.
 - **Every visual aspect** of the legacy pages → VISUALLY OBSOLETE, discarded.
 
@@ -232,7 +232,7 @@ compatible with the colourblindness figure on the same page.
 ## C8 — A requested foundational source was unavailable — **CLOSED 2026-09-18**
 
 **Original entry.** Norman, *The Design of Everyday Things*, was named in the
-brief but absent from `docs/books/`. Rather than cite it from memory — which
+brief but absent from `docs/`. Rather than cite it from memory — which
 would be fabricating provenance — the oracle attributed affordance, feedback
 and mapping reasoning to the sources actually read, or marked it DERIVED, and
 §5 was thinner on conceptual vocabulary than the brief envisaged.
@@ -256,3 +256,114 @@ consistent with him; several are now SOURCE rules instead, and the reasoning
 that stood in for him has been replaced by the citation.
 
 **Confidence** HIGH (direct observation, both before and after).
+
+---
+
+## C9 — Progressive disclosure vs. simultaneous expert context
+
+**Positions**
+
+- **Tidwell, Ch. 4, Collapsible Panels:** hide noncritical supporting modules
+  and return their space to primary content; this reduces clutter.
+- **Tidwell, Ch. 9, Data Brushing; Johnson, Ch. 7:** simultaneous linked views
+  reveal the same data in different contexts and avoid moving status into
+  fragile working memory.
+- **Cooper, Ch. 9:** a sovereign application can spend more pixels on persistent
+  tools and supporting information than a transient one.
+
+**Cause**
+
+Task simultaneity and frequency. Progressive disclosure helps when information
+is optional or sequential. It hurts when comparison across representations is
+the task itself.
+
+**Resolution**
+
+Keep primary comparison context simultaneously visible; make genuinely optional
+inspectors/panes collapsible and persist the user's choice. Do not hide repeated
+commands or source evidence merely to achieve a sparse appearance. Applied by
+`UI-ARCH-003`, `UI-LAY-001`, `UI-SEL-003` and `UI-OCR-002`.
+
+**Confidence** HIGH for the conditional split; no source supplies exact pane
+defaults.
+
+---
+
+## C10 — One coherent window vs. Many Workspaces
+
+**Positions**
+
+- **Cooper, Ch. 18, book pp. 439–444:** several top-level windows on a small
+  screen are not a good general solution, though they have important occasional
+  uses; unmanaged windows create overhead.
+- **Tidwell, Ch. 2, book pp. 80–83:** visual editors commonly provide Many
+  Workspaces so documents or states can be used in parallel.
+
+**Cause**
+
+One tightly coupled task versus deliberate parallel work; small screen versus
+multi-monitor; incidental popups versus user-owned document/workspace windows.
+
+**Resolution**
+
+`UI-ARCH-004` defaults one task/document to a pane-capable sovereign window and
+permits deliberate multi-document, comparison or multi-monitor windows. Routine
+commands do not spawn windows merely to arrange controls.
+
+**Confidence** MEDIUM. Current WinUI multi-window and accessibility mechanics
+remain unverified.
+
+---
+
+## C11 — Avoid modes vs. use modes to reduce controls and gestures
+
+**Positions**
+
+- **Johnson, Ch. 7, book pp. 114–115:** modes can provide more functions with
+  fewer controls/gestures, but burden memory and cause mode errors when feedback
+  is weak.
+- **Johnson, Ch. 15, book pp. 267–269:** avoid modes where appropriate, while
+  warning that separate controls can increase description slips; otherwise use
+  strong status feedback, reversion and spring-loading.
+- **Cooper, Ch. 18, book pp. 494–496:** small modal toolsets can work, while
+  large sets create switching excise for intermediate users.
+
+**Cause**
+
+Control/gesture economy versus hidden state, plus working-set size and user
+frequency.
+
+**Resolution**
+
+The oracle neither mandates nor bans OCR modes. If the architecture uses them,
+`UI-MODE-001` … `003` require visible status, explicit entry/exit and preference
+for spring-loaded or bounded exceptional modes. Test the alternative for
+description slips rather than manufacturing a compromise by adding controls.
+
+**Confidence** HIGH.
+
+---
+
+## C12 — Spinner until ten seconds vs. progress after a few seconds
+
+**Positions**
+
+- **Oracle 1.0.0 synthesis:** `UI-FB-003` used the 6–30 s unit-task range and a
+  ~10 s review threshold for determinate progress.
+- **Johnson, Ch. 14, book pp. 248–252:** acknowledge by about 0.1 s; communicate
+  continued work by about 1 s; use progress for operations longer than a few
+  seconds. The 10 s value describes attention without refresh, not the initial
+  progress threshold.
+
+**Cause**
+
+The earlier synthesis collapsed distinct timing contexts from one chapter.
+This is an oracle defect, not a disagreement between sources.
+
+**Resolution**
+
+2.0.0 corrects `UI-FB-003` and AP-16: progress/remaining work begins after a few
+seconds when estimable; a spinner is for genuinely indeterminate brief work.
+The 10 s value remains explanatory evidence about context reconstruction.
+
+**Confidence** HIGH (direct correction against the local EPUB).

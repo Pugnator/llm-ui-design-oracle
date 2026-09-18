@@ -57,6 +57,8 @@ Cheap to check, and they catch problems the specific sections assume away.
 | 1.7 | Does workspace state persist across sessions? | `UI-ARCH-002` |
 | 1.8 | Is navigation chrome justified by more than one destination? | `UI-NAV-001` |
 | 1.9 | Do controls stay put between visits (no adaptive reordering)? | `UI-NAV-002` |
+| 1.10 | If several top-level windows exist, what parallel task/display need earns each one? | `UI-ARCH-004` |
+| 1.11 | Does density preserve simultaneous comparison without sacrificing grouping, legibility, focus or text scaling? | `UI-LAY-001` |
 
 ## 2. Commands
 
@@ -89,13 +91,16 @@ Cheap to check, and they catch problems the specific sections assume away.
 | # | Question | Rule |
 |---|---|---|
 | 4.1 | Is keyboard focus always visible? | `UI-SEL-001` |
-| 4.2 | Are focus, selection and hover visually distinct? | `UI-SEL-001` |
+| 4.2 | Are keyboard focus, object selection, active/current state, hover and text caret visually distinguishable? | `UI-SEL-001` |
 | 4.3 | Does selection survive scrolling, pane toggles, background completion? | `UI-SEL-002` |
 | 4.4 | Do multiple representations of one object highlight together? | `UI-SEL-003`, `UI-OCR-001` |
 | 4.5 | Do click / Ctrl+click / Shift+click behave conventionally? | `UI-SEL-004` |
 | 4.6 | Can the active mode be named from a screenshot alone? | `UI-MODE-001` |
 | 4.7 | Is the mode indicator near the work, not only in a distant bar? | `UI-MODE-001` |
 | 4.8 | Can any mode be entered accidentally? | `UI-MODE-002` |
+| 4.9 | If focus, selected item and inspected item differ, can the user identify all three? | `UI-SEL-001` |
+| 4.10 | For multi-selection, are set membership and anchor/lead item unambiguous? | `UI-SEL-001`, `UI-SEL-004` |
+| 4.11 | Can an exceptional mode be held/spring-loaded or scoped to an object instead of persisting globally? | `UI-MODE-003` |
 
 ## 5. Editing
 
@@ -113,10 +118,12 @@ Cheap to check, and they catch problems the specific sections assume away.
 |---|---|---|
 | 6.1 | Does every action produce visible acknowledgement within ~0.1 s? | `UI-FB-001` |
 | 6.2 | Is busy vs idle always distinguishable? | `UI-FB-002` |
-| 6.3 | For work that may exceed ~10 s: determinate progress and an estimate? | `UI-FB-003` |
+| 6.3 | For work beyond a few seconds: determinate progress or remaining work/time when knowable? | `UI-FB-003` |
 | 6.4 | Is every long operation cancellable, with cancel acknowledged at once? | `UI-FB-004` |
 | 6.5 | Does background work leave the rest of the UI interactive? | `UI-FB-005` |
 | 6.6 | Is status reported in the UI rather than by interruption? | `UI-FB-006` |
+| 6.7 | Does a busy/progress animation reflect real work rather than continue after a hang? | `UI-FB-002` |
+| 6.8 | Can a late background result overwrite newer selection or edits? | `UI-FB-005`, `UI-SEL-002` |
 
 ## 7. Dialogs
 
@@ -180,7 +187,9 @@ Cheap to check, and they catch problems the specific sections assume away.
 | 12.3 | Is low confidence findable in one scan, and in greyscale? | `UI-OCR-003` |
 | 12.4 | Is recognised text editable, and failure not blamed on the user? | `UI-OCR-004`, `UI-ERR-003` |
 | 12.5 | Does lookup preserve the line, its position and the selection? | `UI-OCR-005` |
-| 12.6 | Is learning state visible where words appear, not colour-only? | `UI-OCR-006` |
+
+`UI-OCR-006` is retired. Review learning state only when the adopting project's
+profile defines a project-specific rule for it.
 
 ## 13. Anti-pattern sweep
 
@@ -196,6 +205,7 @@ reason. Presence alone is not a finding.
 FINDING  <rule-id>  <PASS|FAIL|N/A|NEEDS HUMAN JUDGMENT>
 Surface  <which surface, and its posture>
 Class    <platform requirement | interaction principle | project convention>
+Verify   <VERIFIED | VERIFIED WITH QUALIFICATION | DERIVED | PROJECT-SPECIFIC>
 Evidence <what was observed>
 Source   <the citation from the oracle rule>
 Fix      <smallest change that would pass, or the question a human must answer>

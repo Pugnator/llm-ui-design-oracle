@@ -1,7 +1,7 @@
 # Domain module: OCR and text recognition
 
 **Module ID:** `ocr`
-**Requires:** UI Oracle core >= 1.0.0
+**Requires:** UI Oracle core >= 2.0.0
 **Status:** stable
 **Opt in:** list `ocr` under `modules` in your project profile.
 
@@ -14,16 +14,26 @@ Rule IDs in this module use the `UI-OCR-` prefix, reserved for it by the core
 
 ---
 
-The object chain this module is about:
+The representation graph this module is about (relationships, not screen
+placement):
 
 ```
-IMAGE → OCR REGION → RECOGNIZED TEXT → TOKEN → DICTIONARY ENTRY
-                                     → READING / MEANING / TRANSLATION
-                                     → ANNOTATION
+SOURCE IMAGE
+  └─ OCR REGION
+       └─ RECOGNIZED STRING
+            ├─ CHARACTER
+            └─ WORD / TOKEN
+                 ├─ READING
+                 ├─ DICTIONARY ENTRY → MEANING / TRANSLATION
+                 ├─ ANNOTATION
+                 └─ LEARNING STATE (only if the adopting project defines it)
 ```
 
 Most of the module concerns keeping the correspondence between those objects
-visible, because the user's real task is comparing one against another.
+visible, because the user's real task is comparing one against another. This is
+not a navigation tree: one token may map to several readings or entries, and
+one annotation may span several tokens. The data model must state cardinality
+instead of letting the visual layout imply a false one-to-one relationship.
 
 ### UI-OCR-001 — Correspondence must be perceptual, not inferred
 **Level:** SHOULD **Authority:** Tier 2 (derived) **Confidence:** MEDIUM
@@ -33,9 +43,14 @@ Where two representations of the same object are visible, their correspondence
 SHOULD be shown by a perceptual cue — linked highlight, shared colour plus a
 second channel, or spatial adjacency.
 
-**Rationale.** Gestalt similarity and common fate (Johnson Ch. 2) make the link
-free to perceive. Otherwise the user maintains the mapping in working memory,
-which Ch. 7 says is small and fragile.
+**Rationale.** Tidwell's Data Brushing pattern directly selects the same data
+simultaneously in several views and says coordination reinforces their shared
+identity. Gestalt similarity and common fate (Johnson Ch. 2) explain why the
+link becomes perceptual. Otherwise the user maintains the mapping in working
+memory, which Johnson Ch. 7 says is small and fragile.
+
+**Sources.** Tidwell Ch. 9, “Data Brushing” (book pp. 458–460); Johnson Chs. 2,
+7. Domain transfer is explicit; neither source studies OCR.
 
 **Review test.** Select a region. Is the corresponding text marked, and vice
 versa, without further action?
@@ -51,7 +66,11 @@ ideally adjacent.
 
 **Rationale.** `UI-ARCH-003` plus Fitts (Johnson Ch. 13): correction is a
 compare-and-type loop, and separating the comparison from the typing adds both
-memory load and travel.
+memory load and travel. Tidwell Ch. 9 describes overview/detail and linked
+views as ways to preserve orientation and context.
+
+**Sources.** Tidwell Ch. 9, “Navigation and Browsing” and “Data Brushing”
+(book pp. 439–440, 458–460); Johnson Chs. 7, 13.
 
 **Review test.** During correction, are the pixels and the text both visible
 without scrolling?
@@ -59,7 +78,7 @@ without scrolling?
 ---
 
 ### UI-OCR-003 — Confidence is information, not decoration
-**Level:** SHOULD **Authority:** Tier 2 (derived) **Confidence:** LOW
+**Level:** SHOULD **Authority:** Tier 2 (derived) **Confidence:** MEDIUM
 **Provenance:** DERIVED RULE
 
 Where recognition confidence is shown, it SHOULD be encoded so that low
@@ -67,8 +86,13 @@ confidence is *findable* — not colour alone (`UI-COLOR-003`), and not so
 prominent that it competes with the text.
 
 **Rationale.** The user's task is finding what needs fixing: a scanning task
-(Johnson Chs. 3, 5). LOW confidence because no source addresses confidence
-display and the right encoding depends on measurement.
+(Johnson Chs. 3, 5). Tidwell's Data Spotlight pattern supports emphasizing a
+subset while retaining its context (Ch. 9, pp. 452–454). Confidence is raised
+only to MEDIUM: no source addresses OCR confidence calibration, and the right
+encoding and threshold depend on the recognizer and user research.
+
+**Sources.** Johnson Chs. 3, 5; Tidwell Ch. 9, “Data Spotlight” (book pp.
+452–454); `UI-COLOR-003`.
 
 **Review test.** Can a user locate the least reliable text in one scan? In
 greyscale?
@@ -85,6 +109,10 @@ NOT be framed as user error.
 **Rationale.** Johnson Ch. 15 states the analogous case outright for speech:
 *"Voice-Recognition Failure and Misrecognition are Not User Errors."*
 
+**Sources.** Johnson Ch. 15, “Voice-Recognition Failure and Misrecognition are
+Not User Errors” (book pp. 273–274). OCR is an explicit analogy, not a claim
+that the source studied optical recognition.
+
 **Review test.** What does the UI say when recognition is poor? Who does the
 wording blame?
 
@@ -97,8 +125,15 @@ wording blame?
 Looking up a token SHOULD NOT hide the line it came from, move it, or discard
 the selection.
 
-**Rationale.** The unit task is reading a line (Johnson Ch. 14: 6–30 s);
-occluding the line restarts it. Compare `UI-SEL-002`, `UI-LAY-005`.
+**Rationale.** Johnson Ch. 7 says interfaces should not require users to
+remember status from moment to moment. Tidwell Ch. 9 says overview/detail and
+contextual results preserve orientation, and linked views keep the same object
+visible in different contexts. A lookup that hides or moves its source converts
+visible context into a memory task. Compare `UI-SEL-002`, `UI-LAY-005`.
+
+**Sources.** Johnson Ch. 7, “Implications of Working-Memory Characteristics”;
+Tidwell Ch. 9, “Navigation and Browsing” and “Data Brushing” (book pp. 439–440,
+458–460).
 
 **Review test.** Look up a word mid-line. Is the line still visible and the
 position kept?

@@ -3,8 +3,8 @@
 A versioned, self-contained rule set for **Windows desktop application UI**,
 written to be shared between projects and cited by rule ID.
 
-**Version 1.0.0** (`VERSION`). 87 core rules, 6 OCR module rules, 20
-anti-patterns.
+**Version 2.0.0** (`VERSION`). 81 core rules, 5 active OCR module rules plus 1
+retired ID, and 22 anti-patterns.
 
 ---
 
@@ -27,7 +27,9 @@ own profile.
 |---|---|---|
 | `UI_ORACLE.md` | The rules, plus Appendix A (source digest) | Core only |
 | `UI_ORACLE_CONTRACT.md` | Versioning, ID stability, namespaces, derogations, conformance, adoption | Core only |
-| `UI_SOURCE_MATRIX.md` | Every source, its date, whether it was verified, and its gaps | Core only |
+| `UI_SOURCE_MATRIX.md` | Source metadata, local paths, completeness, authority, strengths and limits | Core only |
+| `UI_RESEARCH_GAPS.md` | Resolved/open research gaps and final audit | Core only |
+| `UI_EVIDENCE.md` | Question-level source evidence and rule verification ledger | Core only |
 | `UI_CONFLICTS.md` | Where sources disagree and how it was resolved | Core only |
 | `UI_ANTIPATTERNS.md` | Review catalogue, each with the condition that makes it harmful | Core only |
 | `UI_REVIEW_CHECKLIST.md` | The review form | Core only |

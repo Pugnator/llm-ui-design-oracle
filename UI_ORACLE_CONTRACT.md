@@ -16,7 +16,9 @@ The **core** — project-neutral, identical in every adopting project:
 
 ```
 UI_ORACLE.md            the rules
-UI_SOURCE_MATRIX.md     what was read, what was not
+UI_SOURCE_MATRIX.md     source inventory, authority and limits
+UI_EVIDENCE.md          question-level evidence and rule audit
+UI_RESEARCH_GAPS.md     resolved and open research gaps
 UI_CONFLICTS.md         source disagreements and their resolutions
 UI_ANTIPATTERNS.md      review catalogue
 UI_REVIEW_CHECKLIST.md  the review form

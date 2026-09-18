@@ -28,10 +28,11 @@ specifications, where paraphrase would destroy the value, and a few
 definitions where the exact wording *is* the distinction being drawn.
 
 **Companions.** `UI_ORACLE_CONTRACT.md` (versioning, namespaces, derogations,
-adoption), `UI_SOURCE_MATRIX.md` (what was read and what was not),
-`UI_CONFLICTS.md` (disagreements and their resolutions), `UI_ANTIPATTERNS.md`,
-`UI_REVIEW_CHECKLIST.md`, `modules/*.md` (optional domain rules), and the
-adopting project's own `UI_PROFILE.md`.
+adoption), `UI_SOURCE_MATRIX.md` (source inventory), `UI_RESEARCH_GAPS.md`
+(open and resolved gaps), `UI_EVIDENCE.md` (question-by-question evidence and
+the rule verification ledger), `UI_CONFLICTS.md` (disagreements and their
+resolutions), `UI_ANTIPATTERNS.md`, `UI_REVIEW_CHECKLIST.md`, `modules/*.md`
+(optional domain rules), and the adopting project's own `UI_PROFILE.md`.
 
 ### Provenance tags
 
@@ -42,7 +43,26 @@ Every rule is tagged. This is the most important convention in the document.
 - **DERIVED RULE** — reasoned from sources that do not state it outright. The
   reasoning is shown.
 - **PROJECT CONVENTION** — a choice recorded in the adopting project's
-  `UI_PROFILE.md`. No source claims it; the core carries none of its own.
+  `UI_PROFILE.md`. No source claims the chosen value; the core may require a
+  binding to exist but does not supply the project's value.
+
+### Rule classes
+
+These answer a different question from provenance and MUST be reported in a
+review:
+
+- **PLATFORM REQUIREMENT** — a current Tier 1 Windows/accessibility convention.
+  It may use Tier 2 to explain why, but its force comes from the platform.
+- **INTERACTION PRINCIPLE** — a Tier 2/4 principle, or a Tier 3 behavior
+  explicitly retained as `STILL_VALID_INTERACTION_PRINCIPLE`. It can be strong
+  without being a Windows API/component requirement.
+- **PROJECT CONVENTION** — a deliberate product choice in `UI_PROFILE.md`.
+  It cannot be promoted into a universal law by repetition.
+
+For a mixed-authority rule, report the class of the clause actually violated.
+For example, an accessible name can be a platform requirement while offering a
+tooltip is an interaction principle. Never report a DERIVED rule as a platform
+requirement unless a cited Tier 1 source states the operative constraint.
 
 ### Confidence
 
@@ -50,6 +70,14 @@ Every rule is tagged. This is the most important convention in the document.
   nothing contradicts it.
 - **MEDIUM** — one strong source, or a sound synthesis.
 - **LOW** — interpretation. **A LOW-confidence rule is never a MUST.**
+
+### Verification status
+
+`UI_EVIDENCE.md` audits every rule as **VERIFIED**, **VERIFIED WITH
+QUALIFICATION**, **DERIVED**, **PROJECT-SPECIFIC**, **WEAKLY SUPPORTED**,
+**OUTDATED**, or **CONTRADICTED**. Provenance answers “how was this rule
+formed?”; verification answers “what did the evidence pass conclude?” The
+2.0.0 release contains no active rule in the last three categories.
 
 ### Normative language
 
@@ -102,19 +130,23 @@ It explains *why* a rule holds. On a question of current Windows appearance or
 a platform component it does not override Tier 1.
 
 **Revision, 2026-09-18.** Norman's *The Design of Everyday Things* (revised
-ed.) was added to `docs/books/` after the first draft and has now been read.
+ed.) was added to `docs/` after the first draft and has now been read.
 `UI-GLOBAL-005` … `UI-GLOBAL-009` are new and Norman-sourced; `UI-ERR-002` and
 `UI-ERR-003` were re-grounded on him as the origin of the slip/mistake
 taxonomy. Conflict C8 (missing source) is closed.
 
-Full inventory, dates and verification status: `UI_SOURCE_MATRIX.md`.
+The four local books are the primary reproducible evidence base. Current
+Windows pages remain authoritative for platform behavior and accessibility,
+but this repository has no local snapshots of them; that limitation is explicit
+in the matrix. Full inventory, dates and completeness: `UI_SOURCE_MATRIX.md`.
+Question-level evidence and the rule-by-rule audit: `UI_EVIDENCE.md`.
 
 ### Legacy classification
 
-Every Tier 3 rule carries one of: **STILL RELEVANT** (adopt),
-**CONCEPTUALLY RELEVANT** (adopt the idea, not the mechanism),
-**VISUALLY OBSOLETE** (discard appearance, keep behaviour),
-**PLATFORM OBSOLETE** (discard), **SUPERSEDED** (cite the replacement).
+Every legacy claim carries one of: **CURRENT**,
+**STILL_VALID_INTERACTION_PRINCIPLE**, **CONTEXT_DEPENDENT**,
+**VISUALLY_OBSOLETE**, **PLATFORM_OBSOLETE**, or **SUPERSEDED**. A source may
+be still valid for behavior and visually obsolete at the same time.
 
 ---
 
@@ -418,21 +450,30 @@ from without clicking anything?
 
 ---
 
-### UI-ARCH-004 — Multi-window is opt-in, never the default organising device
+### UI-ARCH-004 — Multi-window is deliberate, not incidental
 **Level:** SHOULD **Authority:** Tier 2 + Tier 3 **Confidence:** MEDIUM
 **Provenance:** DERIVED RULE
 
-Panes within one sovereign window SHOULD be the default; separate top-level
-windows SHOULD be available for deliberate multi-monitor use.
+For one document or tightly coupled task, panes within one sovereign window
+SHOULD be the default. Separate top-level windows MAY support deliberate
+multi-document, side-by-side or multi-monitor work, but a routine command
+SHOULD NOT spawn one merely to organize ordinary controls.
 
 **Rationale.** Cooper's sovereign application *"begs to take up the full
 screen"* with *"multiple adjacent panes for navigation and supporting
-information."* Window management the user did not ask for is excise.
+information,"* and later says multiple windows are not a good general solution
+on a small screen, while allowing important occasional uses. Tidwell observes
+that visual editors often provide Many Workspaces for parallel documents. The
+difference is user purpose: window management the user did not ask for is
+excise; parallel work the user requested is capability.
 
-**Sources.** Cooper Ch. 9 (PDF p. 236, Fig. 9-1 discussion).
+**Sources.** Cooper Ch. 9 (book p. 207, PDF p. 237) and Ch. 18, “Windows on the
+Desktop” (book pp. 439–444, PDF pp. 469–474); Tidwell Ch. 2, visual editors and
+Many Workspaces (book pp. 80–83). See conflict C10.
 
-**Review test.** Does a routine action spawn a window? Can the user get it back
-into the main window?
+**Review test.** Does a routine action spawn a window? If there are several
+windows, which parallel task or display need earns each one, and do selection,
+document identity and focus remain unambiguous?
 
 ---
 
@@ -453,8 +494,9 @@ it costs permanent screen area and a level of indirection.
 **Exceptions.** Genuinely separate top-level activities (workspace vs library
 vs study session) MAY warrant explicit switching.
 
-**Sources.** Tidwell Ch. 3 (p. 149) read in scope with the preface (p. 15);
-Cooper Ch. 9.
+**Sources.** Tidwell Ch. 3 read in scope with the preface (“screen-based
+interaction design for web and mobile”); Cooper Ch. 9. This is deliberately
+DERIVED, not a platform prohibition.
 
 **Review test.** How many destinations? Would tabs, panes or a mode control do
 it in less space?
@@ -469,11 +511,13 @@ Controls MUST NOT move between visits based on recency, frequency or
 adaptation. Panes MUST keep their position across sessions unless the user
 moves them.
 
-**Rationale.** Johnson Ch. 10: performing learned actions is easy, novel
-actions are hard; motor memory only forms against stable targets. Fitts' Law
-(Ch. 13) presumes a known location. Moving controls void both.
+**Rationale.** Tidwell Ch. 1 says rearranging controls disrupts spatial memory
+and explicitly warns against automatic menu rearrangement. Johnson Ch. 10:
+performing learned actions is easy, novel actions are hard; Fitts' Law (Ch. 13)
+presumes a known location. Moving controls voids both.
 
-**Sources.** Johnson Chs. 10, 13.
+**Sources.** Tidwell Ch. 1, “Spatial Memory” (book pp. 20–21); Johnson Chs. 10,
+13.
 
 **Review test.** Does any control's position depend on history? Would a user
 who learned the layout last week still hit the target blind?
@@ -497,13 +541,28 @@ because daily familiarity is carrying the load that size and spacing carry
 elsewhere. Transient surfaces get the opposite treatment: large controls,
 precise word labels, no ambiguity. (Appendix A.1.)
 
+Density is contextual:
+
+| Context | Appropriate tendency |
+|---|---|
+| Infrequent, sequential decision | Lower density; explicit labels; one decision group at a time |
+| Repeated expert workflow | Higher density may reduce travel and navigation |
+| Simultaneous comparison | Keep related representations visible together when that saves memory/context switches |
+| Unrelated or optional information | Separate, collapse or defer it; density is not permission for noise |
+
 **Constraint.** Density MUST NOT be bought below the typography floor
-(`UI-TYPO-002`) or the contrast floor (`UI-COLOR-001`).
+(`UI-TYPO-002`), the contrast floor (`UI-COLOR-001`), distinguishable grouping
+(`UI-LAY-002`) or operability at required text scaling (`UI-A11Y-003`). There
+is no supported universal spacing value or pane count.
 
-**Sources.** Cooper Ch. 9 (PDF pp. 241, 243).
+**Sources.** Cooper Ch. 9 (book pp. 211–214, PDF pp. 241–244); Tidwell Ch. 2,
+workflow-dominant apps (book pp. 33–34), and Ch. 4, “Density” and “Proximity”
+(book pp. 212–218); Johnson Chs. 2–3.
 
-**Review test.** Which posture? If sovereign, is whitespace doing work or
-imitating a consumer app? If transient, is anything shrunk to fit?
+**Review test.** Which posture and task frequency? Does the chosen density keep
+the information needed for comparison visible while preserving grouping,
+legibility, focus visibility and text scaling? Is whitespace separating meaning
+or merely importing a fashion?
 
 ---
 
@@ -704,24 +763,48 @@ experiment?
 
 ## 10. Selection and focus
 
+These states answer different questions and MUST be modeled separately before
+visual styling is chosen:
+
+| State | Semantic question |
+|---|---|
+| Keyboard focus | Where will the next keyboard input go? |
+| Selected object(s) | What will the next object command act on? |
+| Active/current object | Which document or region owns the current command context? |
+| Hover | What is temporarily under the pointer? |
+| Text caret | Where will typed text be inserted? |
+| Inspected item | Which object's properties are being shown? |
+| OCR region/token | Which domain unit is the subject at this granularity? |
+| Multi-selection anchor/lead | Which item defines extension and which item has current detail? |
+
+An element may carry more than one state simultaneously. That does not permit
+one undifferentiated highlight to mean several things.
+
 ### UI-SEL-001 — Focus and selection are distinct and both visible
 **Level:** MUST **Authority:** Tier 1 + Tier 2 **Confidence:** HIGH
 **Provenance:** DERIVED RULE
 
 Keyboard focus MUST be visible at all times and MUST be visually distinct from
-selection. Hover MUST be distinct from both.
+object selection. Hover, active/current state and the text caret MUST remain
+distinguishable from both. A selected set MUST remain distinguishable from its
+anchor/lead item when the product has that concept.
 
-**Rationale.** They are different states — focus is where input goes, selection
-is what commands act on — and conflating them makes keyboard operation
-guesswork. Microsoft's accessibility guidance treats keyboard operability and
-visible focus as baseline; Cooper treats selection state as a core direct-
-manipulation affordance (Ch. 19, pointing and selection, PDF p. 495).
+**Rationale.** Tidwell defines keyboard focus as the control receiving keyboard
+input and separately describes a click-selected object as the target of later
+commands; her examples also distinguish selected from hovered/highlighted.
+Cooper requires selection state to be visually evident and unambiguous.
+Conflating the states makes both keyboard destination and command target
+guesswork.
 
-**Sources.** Accessible text requirements (tab-order guidance); Cooper Ch. 19
-(p. 495).
+**Sources.** Tidwell Ch. 1, “Keyboard Only” (book pp. 23–25), Ch. 2 (book
+p. 113), and Ch. 8 (book pp. 379–380); Cooper Ch. 18, “Pointing, Selection,
+and Direct Manipulation” (book p. 480, PDF p. 510). Current Windows focus-
+visual details remain a matrix gap.
 
-**Review test.** Tab through. Is focus always visible? Can you tell focus from
-selection from hover in a screenshot?
+**Review test.** In a screenshot containing a selected OCR region, an active
+document, an inspected token and a focused editor, can each state be named?
+Tab through: is the input destination continuously visible? Move the pointer:
+does hover obscure or impersonate any persistent state?
 
 ---
 
@@ -750,11 +833,13 @@ Still selected?
 When one object is shown in several places at once, selecting it in one place
 SHOULD highlight it in all of them.
 
-**Rationale.** Gestalt similarity and common fate (Johnson Ch. 2) make the
-correspondence perceptual rather than inferred, which is the difference between
-seeing a relationship and working it out.
+**Rationale.** Tidwell's Data Brushing pattern directly describes selecting
+data in one view and showing the same data selected simultaneously in another;
+coordinated views reinforce that they are perspectives on the same data.
+Gestalt similarity and common fate (Johnson Ch. 2) explain why the
+correspondence becomes perceptual rather than inferred.
 
-**Sources.** Johnson Ch. 2; Tidwell Ch. 9, *Showing Complex Data* (p. 453).
+**Sources.** Tidwell Ch. 9, “Data Brushing” (book pp. 458–460); Johnson Ch. 2.
 
 **Review test.** Select in one pane. Is the counterpart marked elsewhere
 without further action?
@@ -763,17 +848,19 @@ without further action?
 
 ### UI-SEL-004 — Multiple selection needs a stated model
 **Level:** SHOULD **Authority:** Tier 3 **Confidence:** MEDIUM
-**Provenance:** DERIVED RULE — legacy: **STILL RELEVANT**
+**Provenance:** DERIVED RULE — legacy: **STILL_VALID_INTERACTION_PRINCIPLE**
 
 Where multi-select exists it SHOULD follow platform convention: click replaces,
 Ctrl+click toggles, Shift+click extends.
 
-**Rationale.** These are long-standing Windows conventions; violating them
-breaks transferred knowledge (Johnson Ch. 10). Classified STILL RELEVANT: the
-mechanism is unchanged on current Windows even though the legacy documentation's
-visuals are obsolete.
+**Rationale.** Tidwell says list multi-selection should use platform standards
+such as Shift-selection or explicit checkboxes, and describes arrow keys with
+modifiers for keyboard selection. Violating learned conventions breaks
+transferred knowledge (Johnson Ch. 10). Exact component mechanics must still be
+checked against the chosen current Windows control.
 
-**Sources.** Win32 UX Guide (legacy, interaction only); Johnson Ch. 10.
+**Sources.** Tidwell Ch. 1, “Keyboard Only” (book p. 24), and Ch. 7 (book
+p. 335); Johnson Ch. 10.
 
 **Review test.** Do the three modifiers behave conventionally? Is the model
 discoverable without documentation?
@@ -815,7 +902,9 @@ Cooper Ch. 21 (dialogs, PDF p. 655) and a working-memory cost (Johnson Ch. 7).
 
 **Exceptions.** Edits needing substantial extra UI, or affecting many objects.
 
-**Sources.** Cooper Ch. 21; Johnson Ch. 7.
+**Sources.** Tidwell Ch. 8, “Single-Clicking Versus Double-Clicking Items”
+(book p. 379); Cooper Ch. 21, “Dialogs” (book pp. 625–640, PDF pp. 655–670);
+Johnson Ch. 7.
 
 **Review test.** While editing, is the surrounding context still visible?
 
@@ -823,7 +912,7 @@ Cooper Ch. 21 (dialogs, PDF p. 655) and a working-memory cost (Johnson Ch. 7).
 
 ### UI-EDIT-003 — Commit and cancel are explicit and symmetrical
 **Level:** MUST **Authority:** Tier 3 **Confidence:** HIGH
-**Provenance:** SOURCE RULE — legacy: **STILL RELEVANT**
+**Provenance:** SOURCE RULE — legacy: **STILL_VALID_INTERACTION_PRINCIPLE**
 
 Any edit mode MUST define its commit and cancel gestures, and Escape MUST
 cancel without applying.
@@ -843,7 +932,7 @@ Escape discard?
 
 ### UI-EDIT-004 — Validate without blocking typing
 **Level:** SHOULD **Authority:** Tier 3 + Tier 2 **Confidence:** MEDIUM
-**Provenance:** SOURCE RULE — legacy: **STILL RELEVANT**
+**Provenance:** SOURCE RULE — legacy: **STILL_VALID_INTERACTION_PRINCIPLE**
 
 Input problems SHOULD be reported in place, not in a modal dialog, and SHOULD
 NOT prevent continued typing.
@@ -868,11 +957,13 @@ typing?
 Every step of the primary repeated workflow MUST be performable without the
 mouse.
 
-**Rationale.** Keyboard operability is an accessibility baseline, and in a
+**Rationale.** Tidwell's Keyboard Only pattern requires no operation to be
+mouse-only and explains both physical-access and efficiency reasons. In a
 sovereign application it is also the expert path. Cooper Ch. 12 counts forced
 pointing as excise; Johnson Ch. 13 measures it.
 
-**Sources.** Accessible text requirements; Cooper Ch. 12; Johnson Ch. 13.
+**Sources.** Tidwell Ch. 1, “Keyboard Only” (book pp. 23–25); Cooper Ch. 12;
+Johnson Ch. 13; current Windows accessibility guidance.
 
 **Review test.** Unplug the mouse. Can the loop be completed?
 
@@ -888,7 +979,8 @@ Tab order MUST follow the visible reading order of the surface.
 screen-reader users alike. The accessibility topic's tab-stop guidance assumes
 the correspondence.
 
-**Sources.** Accessible text requirements.
+**Sources.** Tidwell Ch. 1, “Keyboard Only” (book p. 24), and Ch. 8, “Tab
+Order” (book p. 380); current Windows accessibility guidance.
 
 **Review test.** Tab through and note the path. Does it match reading order?
 
@@ -914,18 +1006,20 @@ of focus.
 
 ### UI-KBD-004 — Escape is consistent everywhere
 **Level:** MUST **Authority:** Tier 3 **Confidence:** HIGH
-**Provenance:** DERIVED RULE — legacy: **STILL RELEVANT**
+**Provenance:** DERIVED RULE — legacy: **STILL_VALID_INTERACTION_PRINCIPLE**
 
-Escape MUST always mean "leave without applying": close the transient surface,
-cancel the edit, or exit the mode — never commit, never nothing.
+When a cancellable edit, transient surface or exceptional mode is active,
+Escape MUST mean “leave without applying”: close the transient surface, cancel
+the edit, or return to normal mode. Escape MUST NOT commit. With no such state
+active, doing nothing is acceptable.
 
 **Rationale.** Escape is the universal exit. If it sometimes does nothing, users
 stop trusting it and mode errors persist (§21). Johnson Ch. 15 on slips.
 
 **Sources.** Win32 UX Guide, *Dialog Boxes*; Johnson Ch. 15.
 
-**Review test.** Press Escape in every state. Any state where it does nothing
-or commits?
+**Review test.** In every cancellable edit, transient surface and exceptional
+mode, press Escape. Does it return to the prior stable state without committing?
 
 ---
 
@@ -936,11 +1030,13 @@ or commits?
 Repeated commands SHOULD have shortcuts, shown next to the command wherever it
 appears.
 
-**Rationale.** Johnson Ch. 9: recognition is easy, recall is hard — a shortcut
-printed beside the command converts recall into recognition and teaches the
-expert path during ordinary use.
+**Rationale.** Tidwell recommends shortcuts in most desktop applications for
+accessibility and experienced users. About Face says accelerator annotations
+beside menu commands or in tooltips teach quicker methods. Johnson Ch. 9
+explains why: visible notation converts recall into recognition.
 
-**Sources.** Johnson Chs. 9, 11.
+**Sources.** Tidwell Ch. 8, “Keyboard Actions” (book p. 380); Cooper Ch. 18,
+“Accelerators” (book pp. 453–454, PDF pp. 483–484); Johnson Chs. 9, 11.
 
 **Review test.** Can a user discover the shortcut without documentation?
 
@@ -1061,23 +1157,29 @@ inferring it from staleness?
 
 ---
 
-### UI-FB-003 — Work beyond a unit task shows progress and remaining time
-**Level:** SHOULD **Authority:** Tier 2 **Confidence:** MEDIUM
-**Provenance:** DERIVED RULE
+### UI-FB-003 — Work longer than a few seconds shows progress and remaining work
+**Level:** SHOULD **Authority:** Tier 2 **Confidence:** HIGH
+**Provenance:** SOURCE RULE
 
-Operations that may exceed the unit-task window (6–30 s) SHOULD show
-determinate progress and an estimate, not merely a spinner.
+If an operation may take longer than a few seconds, it SHOULD show determinate
+progress or remaining work/time whenever the system can estimate it. A spinner
+is acceptable only while progress is genuinely indeterminate and brief.
 
-**Rationale.** Johnson: interruptions beyond ~10 s make the mind wander and the
-user must reconstruct context. His worked example praises *"good progress
-indicator, useful time estimate, and cancel button"* and criticises *"no
-progress bar (just a busy bar) and no cancel"*. Marked SHOULD and MEDIUM
-because the threshold is a human range, not a platform specification.
+**Rationale.** Johnson gives distinct deadlines: acknowledge the action by
+about 0.1 s; indicate continued work by about 1 s; use progress for operations
+longer than a few seconds. Progress is better than a busy indicator because it
+lets users judge remaining time. The 10-second attention limit explains why
+long silence is disruptive; it is not the trigger at which progress first
+becomes useful. Tidwell independently says to show what is happening, how much
+has completed, how much remains, and how to stop it.
 
-**Sources.** Johnson Ch. 14 (Figs. 14.1, 14.2).
+**Sources.** Johnson Ch. 14, “1 second,” “Use busy indicators,” and “Use
+progress indicators” (book pp. 248–252), Figs. 14.1–14.2; Tidwell Ch. 8,
+“Loading or Progress Indicators” (book pp. 409–414).
 
-**Review test.** Can the operation exceed ~10 s? Is progress determinate? Is
-there an estimate?
+**Review test.** Can the operation exceed a few seconds? Does the UI expose
+total/remaining work or time if knowable? If it uses a spinner, is indeterminacy
+real rather than an implementation shortcut?
 
 ---
 
@@ -1092,7 +1194,9 @@ acknowledged within ~0.1 s even if unwinding takes longer.
 don't want"*, and he names un-abortable blocking operations as a specific
 responsiveness failure.
 
-**Sources.** Johnson Ch. 14.
+**Sources.** Johnson Ch. 14, “Responsiveness Defined” and “Process user input
+according to priority” (book pp. 235–237, 253–254); Tidwell Ch. 8, “Loading or
+Progress Indicators” (book pp. 409–414).
 
 **Review test.** Start the longest operation. Is there a cancel? Does pressing
 it respond immediately?
@@ -1154,7 +1258,7 @@ message serve?
 
 ### UI-DLG-002 — Modeless surfaces use task-specific commit verbs
 **Level:** MUST **Authority:** Tier 3 **Confidence:** HIGH
-**Provenance:** SOURCE RULE — legacy: **STILL RELEVANT**
+**Provenance:** SOURCE RULE — legacy: **STILL_VALID_INTERACTION_PRINCIPLE**
 
 Modeless surfaces MUST NOT use OK/Cancel. They use a task-specific commit
 button and *Close*.
@@ -1195,7 +1299,7 @@ add undo.
 
 ### UI-DLG-004 — Enter and Escape are always defined
 **Level:** MUST **Authority:** Tier 3 **Confidence:** HIGH
-**Provenance:** DERIVED RULE — legacy: **STILL RELEVANT**
+**Provenance:** DERIVED RULE — legacy: **STILL_VALID_INTERACTION_PRINCIPLE**
 
 Every dialog MUST define its default (Enter) and cancel (Escape) action, and
 Escape MUST NOT commit.
@@ -1300,7 +1404,8 @@ correction offered rather than an apology?
 
 All values below are quoted from
 [Typography in Windows](https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/typography)
-(`ms.date` 2021-06-24, updated 2026-07-14). They are **normative for Windows
+(Microsoft Learn displays “Last updated” 2026-04-14; rechecked 2026-09-18).
+They are **normative for Windows
 apps** as stated there. Units are effective pixels (epx) as the source gives
 them.
 
@@ -1641,12 +1746,15 @@ that is an argument for exposing it as real text rather than as painted pixels.
 If the same input produces different results depending on state, that state
 MUST be continuously visible where the user is looking.
 
-**Rationale.** A mode the user has forgotten is the precondition for a mode
-error — Johnson Ch. 15 on slips (the user executes a well-learned action in the
-wrong context). Peripheral vision is poor (Ch. 5), so an indicator far from the
+**Rationale.** Johnson Ch. 7 says modes burden working memory and require clear,
+continuous feedback even when users changed the mode themselves. Ch. 15 calls
+the resulting failure a mode slip and says status should be indicated clearly
+and strongly. Peripheral vision is poor (Ch. 5), so an indicator far from the
 work may as well be absent.
 
-**Sources.** Johnson Chs. 5, 15.
+**Sources.** Johnson Ch. 7, “Modes” (book pp. 114–115), and Ch. 15, “Mode
+slips” (book pp. 267–269); Cooper Ch. 18, “Modal tools and palettes” (book pp.
+494–496, PDF pp. 524–526).
 
 **Review test.** From a screenshot alone, can you name the active mode? Is the
 indicator near the pointer/content, not only in a distant status bar?
@@ -1658,24 +1766,35 @@ indicator near the pointer/content, not only in a distant status bar?
 **Provenance:** DERIVED RULE
 
 Modes MUST NOT be entered as a side effect of an unrelated action, and MUST
-always be exitable by Escape (`UI-KBD-004`).
+have an explicit exit. Exceptional/cancellable modes MUST be exitable by Escape
+(`UI-KBD-004`); a normal persistent working context may instead change through
+an equally explicit mode command.
 
-**Sources.** Johnson Ch. 15; Cooper Ch. 15.
+**Sources.** Johnson Ch. 7, “Modes” (book pp. 114–115), and Ch. 15, “Mode
+slips” (book pp. 267–269); Cooper Ch. 18, “Modal tools and palettes” (book pp.
+494–496, PDF pp. 524–526).
 
 **Review test.** List every way in and out of each mode. Any accidental entry?
 
 ---
 
 ### UI-MODE-003 — Prefer spring-loaded or object-scoped modes
-**Level:** SHOULD **Authority:** Tier 2 **Confidence:** LOW
-**Provenance:** DERIVED RULE
+**Level:** SHOULD **Authority:** Tier 2 **Confidence:** HIGH
+**Provenance:** SOURCE RULE WITH DERIVED EXTENSION
 
 Where a mode is needed, it SHOULD be transient (held, or scoped to the selected
 object) rather than a persistent global state.
 
-**Rationale.** A mode that ends by itself cannot be forgotten. Reasoned from
-Johnson's slip analysis rather than stated by a source — hence LOW, hence
-SHOULD, never MUST.
+**Rationale.** Johnson directly recommends making exceptional modes
+spring-loaded so releasing the control returns to normal, and recommends
+normal-mode reversion after a unit-task timeout or when the user leaves and
+returns. Object scope is a derived alternative: it bounds the mode to visible
+context instead of an invisible application-wide state. This remains SHOULD
+because Johnson also notes that replacing modes with many separate controls can
+increase description slips.
+
+**Sources.** Johnson Ch. 15, “Mode slips” (book pp. 267–269); Ch. 7, “Modes”
+(book pp. 114–115).
 
 **Review test.** Could this mode end automatically without harming the workflow?
 
@@ -1777,6 +1896,26 @@ be achieved by degrading keyboard or pointer efficiency.
 **Discoverability vs efficiency.** Both, layered: discoverable path visible,
 expert path available and advertised in place (`UI-KBD-005`).
 
+**Modern visual fashions.** Cards, rounded corners, large margins, giant
+headers, hamburger/bottom navigation, floating action buttons, overflow menus,
+sparse dashboards, animation and icon-only controls are not good or bad by
+date. Test the consequence:
+
+| Pattern | It fails when… |
+|---|---|
+| Cards / rounding | enclosure duplicates grouping, consumes comparison space or falsely makes unequal things peers |
+| Large margins / headers | they displace simultaneous task information or increase scrolling without improving hierarchy |
+| Hamburger / bottom navigation | a desktop workspace's frequent destinations or commands become hidden or remote |
+| Floating action button | one action receives unjustified dominance or covers working content |
+| Overflow / ellipsis | a repeated command is converted from recognition to recall and traversal |
+| Sparse dashboard | the primary work object becomes one summary tile among many |
+| Animation | it moves a target, delays a task, obscures state or ignores reduced-motion needs |
+| Icon-only commands | the glyph is ambiguous, transient, inaccessible or discoverable only by hover |
+
+Corner radius by itself is aesthetic and produces no finding under this oracle.
+Every rejection must cite a task, hierarchy, density, stability, accessibility
+or command-frequency rule—not “modern UI” as a label.
+
 **Where this oracle is silent.** No spacing scale, no control sizes, no corner
 radii, no minimum target size, no motion durations, no non-text contrast ratio.
 These were not verified (see the matrix gap list) and are therefore **not**
@@ -1789,6 +1928,10 @@ from this document's silence, and do not invent them.
 
 See `UI_REVIEW_CHECKLIST.md` for the form to work through, answerable as
 PASS / FAIL / NOT APPLICABLE / NEEDS HUMAN JUDGMENT.
+
+Use `UI_EVIDENCE.md` when a rule is disputed or when its verification status
+matters. Use `UI_RESEARCH_GAPS.md` before proposing a new rule: an explicit gap
+must not be filled by a plausible but unsourced convention.
 
 ---
 
@@ -1847,9 +1990,10 @@ orders of magnitude because interaction design does not need more precision:
 | 10 s | The rough limit of attention without refreshment |
 
 The design consequences follow directly: acknowledge every action within about
-a tenth of a second even when the answer takes longer; make busy state
-visible; let the user keep working; allow cancellation; and let them judge how
-long something will take.
+a tenth of a second even when the answer takes longer; communicate continued
+work by about one second; for work longer than a few seconds prefer progress
+and remaining work/time to a spinner; make busy state honest; let the user keep
+working; and allow cancellation.
 
 ![Response-time deadlines](img/response-time.svg)
 
@@ -1919,7 +2063,23 @@ accent colour for emphasis and interactive state, used sparingly and chosen by
 the user; light and dark both first-class; and text contrast held to a defined
 minimum, with colour never the sole carrier of meaning.
 
-### A.8 What no source supplied
+### A.8 Professional desktop patterns (Tidwell, *Designing Interfaces* 3e)
+
+Although the third edition's preface focuses on web and mobile, several sections
+explicitly address desktop/professional work. “Keyboard Only” requires a path
+that does not depend on the mouse; Ch. 8 explains shortcuts and tab focus for
+accessibility and experienced users. The task/workflow section puts frequent
+commands immediately at hand and notes that experienced users can work
+efficiently with dense information/selectors. Ch. 4 shows that low density can
+weaken grouping rather than improve it.
+
+For the OCR relationship problem, Ch. 9 is especially direct: Data Brushing
+selects the same data simultaneously in several views, while coordinated views
+may synchronize selection, zoom and panning. This is the local source behind
+linked selection; applying it to image regions, recognized strings and tokens is
+a declared domain transfer, not an invented consensus.
+
+### A.9 What no source supplied
 
 Recorded so a future reader does not assume the silence is an oversight: no
 verified spacing or sizing scale, no control dimensions, no corner radii, no

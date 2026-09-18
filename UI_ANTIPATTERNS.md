@@ -128,7 +128,8 @@ Escape.
 invisible — Johnson Ch. 5 on peripheral vision) or absent. Produces mode
 errors: a well-learned action executed in the wrong context.
 
-**Decided by** Johnson Chs. 5, 15.
+**Decided by** Johnson Ch. 7, “Modes” (book pp. 114–115), and Ch. 15,
+“Mode slips” (book pp. 267–269); Cooper Ch. 18, “Modal tools and palettes.”
 
 **Rules** `UI-MODE-001`, `UI-MODE-002`, `UI-KBD-004`.
 
@@ -144,8 +145,10 @@ where four would fit.
 **Harmful when** It forces scrolling or pane-switching in a comparison task, so
 the user pays context switches for air. This is the C1 error.
 
-**Decided by** Cooper Ch. 9 (PDF p. 241) — sovereign UI may pack *"more tightly
-than you otherwise could"*. Bounded by `UI-TYPO-002` and `UI-COLOR-001`.
+**Decided by** Cooper Ch. 9 (book pp. 211–214; PDF pp. 241–244) — sovereign UI
+may pack more tightly. Tidwell Ch. 4, “Density” (book pp. 212–213), demonstrates
+that a less-dense example can be harder to read and group. Bounded by
+`UI-TYPO-002`, `UI-COLOR-001` and `UI-A11Y-003`.
 
 **Rules** `UI-LAY-001`, `UI-GLOBAL-002`.
 
@@ -271,9 +274,10 @@ with no cancel.
 
 **Fine when** The work is reliably shorter than about a second.
 
-**Harmful when** It can exceed the unit-task window: the user cannot judge
-whether to wait, and past ~10 s attention leaves and must be rebuilt. Johnson
-names the exact failure — *"no progress bar (just a busy bar) and no cancel"*.
+**Harmful when** Work lasts more than a few seconds and progress/remaining work
+is knowable: the user cannot judge whether to wait. Johnson calls for a progress
+indicator after a few seconds; the later ~10 s attention limit explains the
+cost of silence but is not the progress trigger.
 
 **Decided by** Johnson Ch. 14 (Figs. 14.1, 14.2).
 
@@ -343,3 +347,44 @@ after the first pays for the first.
 **Decided by** Cooper Ch. 9, "Target intermediate users" (PDF p. 240).
 
 **Rules** `UI-EXP-001`, `UI-ARCH-001`.
+
+---
+
+## AP-21 — One highlight, several meanings
+
+**Looks like** The same outline or fill is used for keyboard focus, selected OCR
+region, current token, inspected item, hover and text caret context.
+
+**Fine when** The states truly coincide and remain distinguishable if they later
+diverge.
+
+**Harmful when** The user cannot tell where typing will go, what a command will
+act on, or which object the inspector describes. A single screenshot becomes
+semantically ambiguous even though it looks visually consistent.
+
+**Decided by** Tidwell Ch. 1, “Keyboard Only” (focus receives keys), Ch. 8
+(object selection precedes commands), and Ch. 2 p. 113 (selected versus hovered
+highlight); Cooper Ch. 18 requires visible, unambiguous selection.
+
+**Rules** `UI-SEL-001`, `UI-SEL-003`, `UI-OCR-001`.
+
+---
+
+## AP-22 — Mobile command furniture transplanted to desktop
+
+**Looks like** Bottom navigation, a floating action button, giant headers or a
+hamburger/ellipsis surface used as the primary command model of a resizable
+professional desktop window.
+
+**Fine when** The control solves a demonstrated narrow-window, posture or
+single-primary-action problem and does not hide the repeated loop.
+
+**Harmful when** It hides frequent commands, covers working content, creates an
+unjustified single visual focal point, or spends permanent comparison space on
+navigation intended for another platform.
+
+**Decided by** Tidwell's own web/mobile scope limitation; her Ch. 2 frequency
+rule; Cooper Ch. 9 posture; `MS-COMMAND` command placement. Rounded corners or
+the visual fashion alone are not a finding.
+
+**Rules** `UI-NAV-001`, `UI-CMD-001`, `UI-CMD-003`, `UI-LAY-003`.

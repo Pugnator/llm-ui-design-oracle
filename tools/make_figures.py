@@ -61,7 +61,8 @@ for x, title, sub, items in cols:
 f1.append('<text class="s" x="16" y="324">Applying either column to the other posture is the most '
           'common structural error this oracle catches.</text>')
 f1.append('</svg>\n')
-io.open(os.path.join(OUT, 'posture.svg'), 'w', encoding='utf-8').write('\n'.join(f1))
+# Keep the historical CRLF serialization of the unchanged posture figure.
+io.open(os.path.join(OUT, 'posture.svg'), 'w', encoding='utf-8', newline='\r\n').write('\n'.join(f1))
 
 # ── Figure 2: response-time deadlines ────────────────────────────────────
 w, h = 860, 300
@@ -73,18 +74,18 @@ y0 = 96
 f2.append('<line class="ax" x1="60" y1="%d" x2="810" y2="%d"/>' % (y0, y0))
 marks = [
     (60,  '0.1 s',  'Acknowledge', 'Anything slower breaks the sense that the click caused the result.'),
-    (250, '~1 s',   'Stay conversational', 'A gap longer than a turn in conversation. Show the busy state.'),
-    (440, '10 s',   'Attention leaves', 'Past the limit of held attention. Progress and an estimate, or the user must rebuild context.'),
-    (700, '> 10 s', 'Give the work back', 'Determinate progress, a time estimate, a cancel, and an interactive UI meanwhile.'),
+    (250, '~1 s',   'Explain continued work', 'Complete the action or show honest busy or progress state.'),
+    (440, 'A few seconds', 'Show progress', 'Prefer determinate total or remaining work when it can be estimated.'),
+    (630, '~10 s',  'Protect context', 'Attention may leave. Keep the UI interactive and provide cancel.'),
 ]
 for x, label, head, note in marks:
     f2.append('<line class="tick" x1="%d" y1="%d" x2="%d" y2="%d"/>' % (x, y0 - 8, x, y0 + 8))
     f2.append('<text class="h" x="%d" y="%d">%s</text>' % (x, y0 - 18, label))
     f2.append('<text x="%d" y="%d">%s</text>' % (x, y0 + 32, head))
-    # wrap the note by hand at ~46 chars
+    # wrap the note by hand to keep each of the four columns independent
     words, line, lines = note.split(), '', []
     for wd in words:
-        if len(line) + len(wd) + 1 > 46:
+        if len(line) + len(wd) + 1 > 30:
             lines.append(line); line = wd
         else:
             line = (line + ' ' + wd).strip()
@@ -92,10 +93,9 @@ for x, label, head, note in marks:
     for j, ln in enumerate(lines[:4]):
         f2.append('<text class="s" x="%d" y="%d">%s</text>' % (x, y0 + 52 + j * 16, ln))
 
-f2.append('<text class="s" x="16" y="286">Derived from published durations of perceptual and cognitive '
-          'processes; see Appendix A. Each deadline is roughly ten times the one before it.</text>')
+f2.append('<text class="s" x="16" y="286">Johnson Ch. 14; see Appendix A. “A few seconds” is the source’s qualitative progress trigger, not an invented exact threshold.</text>')
 f2.append('</svg>\n')
-io.open(os.path.join(OUT, 'response-time.svg'), 'w', encoding='utf-8').write('\n'.join(f2))
+io.open(os.path.join(OUT, 'response-time.svg'), 'w', encoding='utf-8', newline='\n').write('\n'.join(f2))
 
 for n in ('posture.svg', 'response-time.svg'):
     print('%-20s %6d bytes' % (n, os.path.getsize(os.path.join(OUT, n))))

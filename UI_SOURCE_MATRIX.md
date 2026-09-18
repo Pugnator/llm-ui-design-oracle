@@ -1,70 +1,79 @@
 # UI Source Matrix
 
-What was consulted to build `UI_ORACLE.md`, what each source is good for, and
-where it must not be trusted. Compiled 2026-09-18.
+Inventory of the evidence used by the oracle. Revised 2026-09-18 after a
+recursive inspection of the repository and a full-text concept search of every
+local book. The local corpus is the primary evidence base; current platform
+pages retained from the first research pass are listed separately because they
+are not local snapshots and can change.
 
-**Verification status** says whether *this* matrix was built by reading the
-source directly. Nothing in the oracle cites a source marked "not available".
+`Verified` means the cited file or page was read, not merely named. `Complete`
+describes the supplied copy, not the work in the abstract.
 
----
+## Local corpus — primary evidence
 
-## Tier 1 — Current Windows platform authority
+| ID | Source and verified metadata | Target / date | Local path and completeness | Tier | Strongest areas | Weak or obsolete areas |
+|---|---|---|---|---|---|---|
+| `AF4` | Alan Cooper, Robert Reimann, David Cronin, Christopher Noessel, *About Face: The Essentials of Interaction Design*, 4th ed., Wiley. Title and copyright pages verify edition, authors, publisher, copyright 2014, ISBN 978-1-118-76657-6. | Cross-platform digital products; desktop, web and mobile examples; 2014 | `docs/cooper_a_reiman_r_cronin_d_noessel_s_about_face_the_essentia.pdf`; complete supplied PDF, 722 PDF pages; searchable text and TOC present | 2 | Sovereign/transient posture (Ch. 9, book pp. 207–218; PDF pp. 237–248); excise (Ch. 12); modeless feedback and undo (Ch. 15); desktop windows, menus, toolbars, sidebars, selection, direct manipulation and modal tools (Ch. 18); dialogs and error prevention (Ch. 21) | Predates Windows 11; examples and visuals are not platform authority. Some recommendations are argued design positions rather than measurements |
+| `DI3` | Jenifer Tidwell, Charles Brewer, Aynne Valencia, *Designing Interfaces*, 3rd ed., O'Reilly. Title/copyright pages verify authors, edition, copyright 2020, January 2020 publication, ISBN 978-1-492-05196-1. | The preface explicitly focuses the edition on screen-based interaction for web and mobile, while retaining desktop patterns | `docs/tidwell_jennifer_brewer_charles_valenciabrooks_aynne_designi.pdf`; complete supplied PDF, 602 PDF pages; searchable text, TOC and index present | 2 | Keyboard Only and Streamlined Repetition (Ch. 1, book pp. 23–25); workflow-dominant apps and Canvas Plus Palette (Ch. 2); layout, density, proximity and panels (Ch. 4, esp. pp. 209–249); lists and multi-selection (Ch. 7, p. 335); actions, keyboard, progress, cancel and undo (Ch. 8, pp. 375–432); linked views/Data Brushing (Ch. 9, pp. 458–460) | Web/mobile bias must be filtered. Patterns are conditional examples, not Windows requirements. Visual examples age faster than the interaction principles |
+| `JM3` | Jeff Johnson, *Designing with the Mind in Mind: Simple Guide to Understanding User Interface Design Guidelines*, 3rd ed., Morgan Kaufmann/Elsevier. EPUB title and copyright files verify edition, author, copyright 2021 and ISBN 978-0-12-818202-4. | Cross-platform UI/HCI; 2021 | `docs/Johnson J_Design with the Mind in Mind_3 2021 289.epub`; complete supplied EPUB: front matter, 15 chapters, bibliography and index are in the spine | 2 | Gestalt and grouping (Ch. 2); hierarchy and scanning (Chs. 3, 6); colour/peripheral vision (Chs. 4–5); memory and modes (Ch. 7, pp. 114–115); recognition/recall and learned actions (Chs. 9–11); Fitts/Steering (Ch. 13); response deadlines, progress and background work (Ch. 14, pp. 235–254); error types, spring-loaded modes, undo and recognition failures (Ch. 15, pp. 259–274) | Explains cognitive basis, not Windows components or visual style. Quantitative timing guidance has context and must not be generalized to unrelated animation/style timing |
+| `DOET-R` | Don Norman, *The Design of Everyday Things*, revised and expanded ed., Basic Books. Front matter verifies edition, copyright 2013, ISBN 978-0-465-05065-9. | General product design; non-platform-specific; 2013 | `docs/norman_d_the_design_of_everyday_things.pdf`; complete supplied PDF, 369 PDF pages; searchable text, TOC and index present | 4 | Affordances/signifiers (Ch. 1, book pp. 10–19); action cycle, conceptual models, mapping and feedback (Ch. 2, pp. 37–73); constraints/forcing functions (Ch. 4, pp. 123–161); slips, mistakes and design-caused error (Ch. 5, pp. 162–216) | Deliberately not software- or Windows-specific. Supplies concepts, not control, density, typography or accessibility specifications |
 
-| Source | Version / date | Verified | Scope | Strong on | Weak / obsolete |
+No other documentation, HTML archive, Markdown corpus, source repository or UI
+sample exists under `docs/` in this checkout. The inventory found exactly three
+PDFs and one EPUB. Earlier matrix text referring to `docs/books/` and unrelated
+game/Japanese texts was inaccurate for this repository and has been removed.
+
+## Current Windows sources — rechecked, non-local
+
+These pages remain Tier 1 because the oracle needs current platform and
+accessibility requirements that the books cannot provide. They were rechecked
+on 2026-09-18, but the repository contains no archival copy. “Last updated” is
+the date currently displayed by Microsoft Learn, not an inferred publication
+date.
+
+| ID | Source | Recorded version/date and verification | Tier | Strong on | Limit |
 |---|---|---|---|---|---|
-| [Design principles](https://learn.microsoft.com/en-us/windows/apps/design/design-principles) | `ms.date` 2025-12-11, updated 2026-07-14 | Read in full | Windows 11 design values | The five principles (Effortless, Calm, Personal, Familiar, Complete + Coherent); names the signature experiences | Values, not rules. Nothing testable. Written for consumer Windows, not professional tools |
-| [Design guidelines overview](https://learn.microsoft.com/en-us/windows/apps/design/guidelines-overview) | `ms.date` 2026-09-05 | Read in full | Index of guidance areas | Authoritative list of current topic areas; explicitly links the legacy archive and says to use it "for historical context" only | Index only |
-| [Color in Windows](https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/color) | `ms.date` 2024-09-19, updated 2026-07-14 | Read in full | Color modes, accent, usability | Accent = emphasis + interactive state; light/dark; colorblindness figures (~8% of men, 0.5% of women, red-green) | No contrast ratios here (they live in the accessibility topic); no semantic error/warning/success palette |
-| [Typography in Windows](https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/typography) | `ms.date` 2021-06-24, updated 2026-07-14 | Read in full | Type ramp, fonts, legibility | **The only verified numeric type scale.** Weights, minimum sizes, line length, per-language fonts incl. **Yu Gothic UI for Japanese** | Oldest `ms.date` of the Tier 1 set. **Contains an internal contradiction on truncation** — see `UI_CONFLICTS.md` C2 |
-| [Accessible text requirements](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/accessible-text-requirements) | `ms.date` 2026-08-21, updated 2026-08-26 | Read in full | Contrast, UIA text roles, text scaling | **4.5:1** contrast (aligned to W3C WCAG 2.0 G18); `TextScaleFactor` range **[1, 2.25]**; static text must not be a tab stop; don't rely on high-contrast mode as the mitigation | Contrast guidance stated for text; non-text contrast not covered here |
-| [Commanding basics](https://learn.microsoft.com/en-us/windows/apps/design/basics/commanding-basics) | `ms.date` 2020-09-24, updated 2026-06-27 | Read in full | Command surfaces and placement | Canvas vs command bar vs menu vs dialog; direct manipulation preferred; **confirm only unrecoverable actions, otherwise offer undo** | Older `ms.date`; examples are consumer-flavoured; says little about keyboard-first workflows |
-| [Fluent 2 — Windows components](https://fluent2.microsoft.design/components/windows) | Fetched 2026-09-18 | Fetched — **contains no component documentation** | — | — | **Not usable as a rule source.** The page is promotional/navigational and defers: "To get the building blocks for crafting Windows experiences, use WinUI." No components, no values. Recorded so nobody cites it as authority |
-| WinUI 3 Gallery | Referenced by MS pages; **app not installed here** | Not verified | Live control examples | Would be the authority for real control behaviour and defaults | Not consulted — no rule in the oracle cites it |
+| `MS-PRINCIPLES` | [Windows design principles](https://learn.microsoft.com/en-us/windows/apps/design/design-principles) | Last updated 2025-12-18; rechecked 2026-09-18 | 1 | Current Windows values | Values, not testable control rules; consumer/shell emphasis |
+| `MS-INDEX` | [Design guidelines overview](https://learn.microsoft.com/en-us/windows/apps/design/guidelines-overview) | Last updated 2026-09-05; rechecked 2026-09-18 | 1 | Current topic map and explicit classification of Win32 UX pages as historical | Index only |
+| `MS-COLOR` | [Color in Windows](https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/color) | Last updated 2026-07-14; rechecked 2026-09-18 | 1 | Accent, themes, colour redundancy | No semantic palette and no non-text contrast ratio |
+| `MS-TYPE` | [Typography in Windows](https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/typography) | Last updated 2026-04-14; rechecked 2026-09-18 | 1 | Type ramp, minimums, measure and script fonts | Internally contradictory on truncation; see C2 |
+| `MS-A11Y-TEXT` | [Accessible text requirements](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/accessible-text-requirements) | Last updated 2026-08-26; rechecked 2026-09-18 | 1 | 4.5:1 visible-text contrast, text scale `[1, 2.25]`, UIA text roles, static-text tab stops | Text-specific; does not establish non-text contrast or all keyboard behavior |
+| `MS-COMMAND` | [Commanding basics](https://learn.microsoft.com/en-us/windows/apps/design/basics/commanding-basics) | Last updated 2022-08-01; rechecked 2026-09-18 | 1 | Command placement, direct manipulation, confirm vs undo | Older page with consumer-flavoured examples; little expert-keyboard detail |
+| `FLUENT2-WIN` | [Fluent 2 Windows overview](https://fluent2.microsoft.design/components/windows) | Rechecked 2026-09-18 | — | Directs Windows designers to WinUI components and resources | Overview only; contains no component guidance from which to derive a rule |
 
-## Tier 2 — General interaction-design authority
+## Legacy Windows source
 
-| Source | Edition | Verified | Strong on | Weak / caution |
-|---|---|---|---|---|
-| Cooper, Reiman, Cronin, Noessel — *About Face: The Essentials of Interaction Design* | 4th ed. (PDF, `docs/books/`, 722 pp.) | TOC + targeted chapters read | **Posture** (Ch. 9, PDF p.235): sovereign / transient / daemonic — the single most load-bearing concept for this app. Excise (Ch. 12, p.301). Errors, undo, modeless feedback (Ch. 15, p.387–393). Menus (p.478), toolbars/palettes/sidebars (p.485), pointing/selection/direct manipulation (p.495). Dialogs (p.655). Eliminating errors, alerts, confirmations (p.671) | Pre-dates Windows 11 visuals entirely. Use for behaviour and structure, never for styling. Opinionated; some claims are argued rather than measured |
-| Tidwell, Brewer, Valencia-Brooks — *Designing Interfaces* | 3rd ed. (PDF, `docs/books/`, 602 pp.) | TOC read; chapter map established | Pattern catalogue. Ch. 2 Information Architecture (p.47), Ch. 3 Navigation (p.149), Ch. 4 Layout of Screen Elements (p.229), Ch. 7 Lists (p.355), Ch. 8 Actions and Commands (p.395), Ch. 9 **Showing Complex Data** (p.453), Ch. 10 Forms and Controls (p.491) | The preface states the focus is "Screen-Based, Web, and Mobile" — so web/mobile assumptions must be filtered out before applying to a desktop tool |
-| Johnson — *Designing with the Mind in Mind* | 3rd ed., 2021 (EPUB, `docs/books/`) | TOC + Ch. 14 read in detail | **Table 14.1 durations** — the only verified quantitative basis for latency rules. Gestalt (Ch. 2), visual hierarchy (Ch. 3), color vision limits (Ch. 4), peripheral vision (Ch. 5), recognition vs recall (Ch. 9), Fitts' & Steering laws (Ch. 13), errors: mistakes vs slips (Ch. 15) | Explains *why*, rarely prescribes platform specifics. Numbers are human constants, not Windows requirements |
-
-## Tier 3 — Legacy Windows interaction guidance
-
-| Source | Date | Verified | Status |
+| ID | Source | Verified | Classification and use |
 |---|---|---|---|
-| [Win32 UX Guide — Dialog Boxes](https://learn.microsoft.com/en-us/windows/win32/uxguide/win-dialog-box) | `ms.date` 2022-01-25, updated 2025-07-24 | Read (9,003 words) | Page title self-identifies as **"Windows 7 Dialog Boxes"**. Interaction rules largely STILL RELEVANT (e.g. "Don't use OK buttons in modeless dialog boxes… use task-specific commit buttons"; "Don't use Cancel buttons in modeless dialog boxes… use Close"; "Use modeless error handling (in-place errors or balloons) for user input problems"). All visuals VISUALLY OBSOLETE |
-| Win32 UX Guide — other topics (menus, keyboard, visuals) | Various | Index seen via guidelines-overview | The current guidelines page lists these under "Historical design guidelines" and says: use them for historical context; "For apps you build today, follow the current Fluent guidance above." Treated per the legacy classification scheme in the oracle |
+| `WIN7-DIALOGS` | [Win32 UX Guide — Dialog Boxes](https://learn.microsoft.com/en-us/windows/win32/uxguide/win-dialog-box) | Rechecked 2026-09-18; page displays “Last updated” 2022-02-08 and self-identifies as Windows 7 guidance | `STILL_VALID_INTERACTION_PRINCIPLE` for modeless commit/Close semantics, in-place input errors and non-destructive defaults; `VISUALLY_OBSOLETE` for appearance; not used as current component authority |
+| `WIN7-OTHER` | Other Win32 UX Guide topics | Only the index was seen | `CONTEXT_DEPENDENT` at best. No rule may cite a specific unseen page. Current guidance supersedes visuals and platform mechanics |
 
-## Tier 4 — Foundational
+## Authority and legacy labels
 
-| Source | Edition | Verified | Strong on | Weak / caution |
-|---|---|---|---|---|
-| Norman — *The Design of Everyday Things* | Revised ed. (PDF, `docs/books/`, 369 pp.) | **Added 2026-09-18.** TOC + Chs. 1, 2, 5 read in detail | **The seven fundamental design principles** (Ch. 2, book pp. 72–73) quoted verbatim in the oracle: discoverability, feedback, conceptual model, affordances, signifiers, mappings, constraints. The **affordance vs signifier** distinction the revised edition exists to make (Ch. 1, pp. 13–14). Seven stages of action and the gulfs of execution/evaluation (p. 57–59). Feedforward vs feedback (p. 72). Four kinds of constraints and forcing functions (Ch. 4, pp. 142–168). **The origin of the slip/mistake taxonomy** and *"Human Error? No, Bad Design"* (Ch. 5, pp. 181–235) | Deliberately not software-specific — most examples are doors, stoves and faucets. Says nothing about Windows, controls, density or typography, and must never be used to override Tier 1 on appearance. Concepts, not measurements |
+- Tier 1: current Windows/accessibility/platform convention.
+- Tier 2: interaction-design and HCI evidence.
+- Tier 3: legacy Windows behavior used only where current guidance is silent.
+- Tier 4: foundational concepts.
 
-**Note on the first draft.** This book was unavailable when the oracle was
-first written, and that absence was recorded rather than papered over with
-remembered citations. It has now been read and the oracle revised: five new
-Tier 4 rules, two error rules re-grounded, conflict C8 closed.
+Legacy claims use: `CURRENT`, `STILL_VALID_INTERACTION_PRINCIPLE`,
+`CONTEXT_DEPENDENT`, `VISUALLY_OBSOLETE`, `PLATFORM_OBSOLETE`, or
+`SUPERSEDED`. A single source can carry different labels for behavior and
+appearance.
 
-## Present but out of scope
+## Remaining source gaps
 
-`docs/books/` also holds game-design texts (Schell, Koster, Engelstein) and
-Japanese-language textbooks. Not consulted: neither bears on Windows desktop
-UI. Listed so the omission is visible rather than accidental.
-
-## Known gaps in this matrix
-
-Recorded so the oracle does not pretend to cover them:
-
-1. **No verified spacing/sizing scale.** The Fluent/Windows layout and
-   geometry pages were not fetched. The oracle therefore states **no** numeric
-   margins, paddings, corner radii or control sizes. Any such number appearing
-   in future UI work must be sourced then, not invented now.
-2. **No verified minimum target size.** Neither a mouse nor a touch target
-   minimum was read from a current Microsoft page. Deliberately absent.
-3. **WinUI 3 Gallery not exercised.** Control-level behaviour is unverified.
-4. **Motion, materials (Mica/Acrylic), elevation, haptics, widgets** — named
-   by the guidelines index, not read. No rules issued for them.
-5. **Non-text contrast** (icons, focus rings, borders) — the accessibility
-   page read covers *text* contrast. No non-text ratio is asserted.
+1. No local Windows, Fluent, WinUI documentation or samples. Platform claims
+   remain traceable to URLs but are not reproducible from the local corpus.
+2. No verified WinUI control behavior, multi-window API guidance, focus-visual
+   specification, high-contrast behavior, or screen-reader test procedure.
+3. No verified spacing scale, pointer/touch target minimum, corner radii,
+   material/elevation values, motion durations, or non-text contrast ratio.
+4. No source in the corpus studies OCR correction UI, confidence calibration,
+   Japanese segmentation, learning-state presentation or assistive-technology
+   behavior for image-text correspondence. OCR rules remain explicit transfers.
+5. No empirical source establishes an optimal pane count or universal density.
+   Density must be chosen from task simultaneity, frequency, posture and measured
+   legibility—not a fashion or a fixed number.
+6. No source justifies a universal ban or mandate for cards, rounded corners,
+   giant headers, floating action buttons, bottom navigation or animation. The
+   oracle may reject them only when a task/rule conflict is demonstrated.
