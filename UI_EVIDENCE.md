@@ -366,14 +366,182 @@ retained for what a sentence says, not for how a Windows 7 dialog looked.
 `UI-TEXT-001` … `UI-TEXT-015` (module `writing`); `UI-ERR-001` gains a
 binding. Confidence: HIGH throughout except `UI-TEXT-010`'s derived clause.
 
+## Question: What does Dear ImGui do, and what can it not do?
+
+Added for 4.0.0 with the `imgui` module. The evidence is the toolkit's own
+documentation, archived under `corpus/imgui/`; locations are section headings
+or identifiers in the archived files.
+
+### Local evidence
+
+- `IMGUI-README`, The Pitch: for *"content creation tools and visualization /
+  debug tools (as opposed to UI for the average end-user)"*; *"full
+  internationalization … and accessibility features are not supported."*
+- `IMGUI-CPP`, Mission statement: *"Designed primarily for developers and
+  content-creators, not the typical end-user!"*; weaknesses *"Doesn't look
+  fancy by default"*, *"Limited layout features"*. Read first: *"Your code
+  creates the UI every frame of your application loop, if your code doesn't
+  run the UI is gone!"* Controls guide: the full key map, including *"Drag on
+  any empty space: Move window (unless io.ConfigWindowsMoveFromTitleBarOnly =
+  true)"* and *"ESCAPE: Revert text to its original value."*
+- `IMGUI-H`: `ImGuiConfigFlags_NavEnableKeyboard` is the *"Master keyboard
+  navigation enable flag"*, default off; `ConfigNavCursorVisibleAuto` (*"Mouse
+  click hides the cursor"*); `ConfigNavEscapeClearFocusItem` default true;
+  `IniFilename` *"relative to current working dir!"*; `FontScaleMain` *"May be
+  set by application once, or exposed to end-user"*; the scaling identity
+  `GetFontSize() == FontSizeBase * (FontScaleMain * FontScaleDpi * …)`;
+  Popups: *"BeginPopupModal(): block every interaction behind the window,
+  cannot be closed by user"*; Menus: shortcuts *"displayed as a convenience
+  but _not processed_"*; Tooltips: `ForTooltip` flags chosen by input type,
+  mouse default *"Stationary | DelayShort"*, `AllowWhenDisabled` by default;
+  `ConfigDebugHighlightIdConflicts` default true; `StyleColorsLight` *"best
+  used with borders and a custom, thicker font"*; `ImGuiInputTextFlags_ReadOnly`;
+  `ConfigWindowsCopyContentsWithCtrlC` experimental; error-recovery seats
+  distinguished. A search of the header for "accessib" finds no API.
+- `IMGUI-FAQ`: ID stack (*"THE MOST COMMON USER MISTAKE"*; *"Interacting with
+  either button will trigger the first one"*; `###` keeps state across label
+  changes); input dispatch via `WantCapture*`; DPI (*"you need to inform
+  Windows that your application is DPI aware!"*; *"avoid using hardcoded
+  constants for size and positioning"*); non-Latin text (UTF-8; IME via
+  `PlatformHandleRaw`); *"A same Dear ImGui context may be not used from
+  multiple threads in parallel"*; skinning *"Somewhat"*; serious tools
+  *"running all day"*.
+- `IMGUI-FONTS`: default *"ProggyClean.ttf … 13 pixels high … does not scale
+  very nicely"*; scalable fonts, merging, icon fonts; `imgui_freetype` for
+  small sizes; UTF-8 tools.
+- `IMGUI-WIKI` Getting Started: *"expected to update continuously at
+  interactive framerates (e.g. 60 FPS)"*, idle *"currently not well supported
+  by default"*; `NavEnableKeyboard` set in every example. Docking: *"there is
+  no great API for this yet"* for default layouts; the ini/`DockBuilder`
+  routes.
+
+### Interpretation
+
+The toolkit is precise about its scope and its gaps, which makes the
+applicability of the core decidable rule by rule. Three core requirements
+cannot be met (accessibility tree); several are met by a mechanism the
+toolkit leaves off or unconfigured by default (keyboard navigation, text
+scale, DPI, settings path, modal keys); one class of failure — the blocked
+frame — has no analogue in the retained-mode sources and needed its own rule.
+Toolkit statements are cited at HIGH confidence as facts about the toolkit;
+the design consequences cite the core.
+
+### Oracle rules
+
+`UI-IMGUI-001` … `UI-IMGUI-021`; contract §5 (`N/A (TOOLKIT)`) and §6
+(qualifier); conflict C16. Confidence: HIGH for toolkit behaviour; MEDIUM
+where the toolkit documents an option without recommending it (`UI-IMGUI-008`,
+`UI-IMGUI-016`, the OS-theme half of `UI-IMGUI-013`).
+
+## Question: What does a command-line program owe its user and the shell?
+
+Added for 4.0.0 with the `cli` module; rewritten in the same release when four
+further sources were read. Locations are section headings or guideline numbers
+in each source.
+
+### Local evidence
+
+- `POSIX-12`, 12.2 Utility Syntax Guidelines 1–14: names *"between two and
+  nine characters"* of lower-case letters and digits; *"Each option name
+  should be a single alphanumeric character"*; *"All options should be
+  preceded by the '-' delimiter"*; grouping behind one `-`;
+  *"Option-arguments should not be optional"*; *"All options should precede
+  operands"*; *"The first -- argument … should be accepted as a delimiter
+  indicating the end of options"*; *"The order of different options relative
+  to one another should not matter"*; `-` for standard input or output. The
+  chapter states that conforming utilities follow these *"as if these
+  guidelines contained the term 'shall' instead of 'should'."*
+- `GNU-STD` 4.1: outside standards are *"suggestions, not orders"*, and GNU
+  departs from POSIX by permitting long options and *"intermixing of options
+  with ordinary arguments."* 4.2: *"Avoid arbitrary limits on the length or
+  number of any data structure"*; *"long lines are silently truncated … is
+  not acceptable in a GNU utility"*; NUL and multibyte input preserved;
+  *"Include the system error text … in every error message resulting from a
+  failing system call"*; *"Do not use a count of errors as the exit status"*;
+  `TMPDIR`. 4.4: the `program: message` form, lower case, no trailing period,
+  and the interactive exception. 4.5: *"don't make the behavior of a utility
+  depend on the name used to invoke it"* and device independence. 4.8: long
+  options for every short one, the `--verbose` example, output files by
+  `-o`/`--output`, *"All programs should support two standard options:
+  '--version' and '--help'."* 4.8.1: name and version on stdout, *"the
+  version number proper starts after the last space"*, other arguments
+  ignored, *"don't compute it from argv[0]"*. 4.8.2: help on stdout, and the
+  bug address and home page *"Near the end of the '--help' option's output"*.
+  4.10: the standard long-option table, including `--quiet`/`--silent` as
+  required synonyms, `--force`, `--dry-run`, `--interactive`, `--recursive`.
+  4.13: internal files do not live in the installation tree.
+- `CLIG` Philosophy: *"if a command is going to be used primarily by humans,
+  it should be designed for humans first"*; *"your only choice is over whether
+  it will be a well-behaved part"*; *"The terminal's conventions are hardwired
+  into our fingers"*; discoverability, citing Norman. The Basics, Help,
+  Output, Errors, Arguments and flags, Interactivity, Subcommands, Robustness,
+  Future-proofing, Signals, Configuration, Environment variables, Naming and
+  Analytics as quoted rule by rule in the module.
+- `12F-CLI` §1 every route to help and *"-h,--help should be a reserved flag
+  used for help only"*; §2 *"1 type of argument is fine, 2 types are very
+  suspect, and 3 are never good"* and the `--` pass-through; §3 the three
+  version invocations; §4 *"stdout is for output, stderr is for messaging"*
+  and passing a child's stderr up; §5 the five parts of an error and
+  tracebacks behind a debug switch, error logs without ANSI; §6 the fallbacks
+  when not a TTY, `TERM=dumb`, `NO_COLOR`, `--no-color`; §7 prompt if stdin is
+  a TTY, *"Never require a prompt"*, typing the name to confirm a destroy; §8
+  *"Never output table borders"*, `--columns`, `--no-truncate`, `--no-headers`,
+  `--sort`, csv/json; §9 the start-up bands *"<100ms … 100ms–500ms: fast
+  enough, aim here"*; §11 bare invocation lists subcommands or shows help;
+  §12 XDG, and `%LOCALAPPDATA%` on Windows.
+- `HEROKU-CLI` Mission statement (*"for humans before machines"*); Naming the
+  command (lower case, no `*:list` command); Description (80 columns, lower
+  case, no full stop); Flags (the `fork --from/--to` example); Prompting
+  (*"Ensure that args or flags can always be provided to bypass the prompt"*);
+  Output (actions on stderr); Colors (disable on `--no-color`, `COLOR=false`,
+  or no TTY; red and yellow reserved); Human-readable vs machine-readable
+  (grep-parseable rows, `--json`, and stdout stable after general
+  availability).
+
+### Interpretation
+
+Five sources, four decades apart, converge. POSIX fixes the syntax, GNU fixes
+the two universal options and the error form, and the three modern guides add
+what a terminal does now: TTY detection, structured output, colour, progress,
+interrupts, configuration and the interface promise. Where they differ, the
+difference is in subject rather than substance: `C13` (where the decisive line
+goes), `C17` (confirmation without undo), `C18` (what an error line starts
+with), `C19` (device independence versus presentation).
+
+Two consequences shaped the module. First, the conventions are a contract with
+other programs, not a matter of taste, so the rules are MUSTs. Second, most of
+them are decidable by running the program, so the module ships
+`tools/cli_check.py` and the contract requires a clean run (§6). The 100 ms
+figure in `UI-CLI-016` is the same order as Johnson's 0.1 s deadline in
+`UI-FB-001`, reached independently by practitioners: corroboration, not a
+second source for the number.
+
+### Oracle rules
+
+`UI-CLI-001` … `UI-CLI-024`; conflicts C17, C18, C19; the `cli` posture value;
+the contract's automated-module gate. Confidence: HIGH throughout — every rule
+is stated by at least one source and contradicted by none.
+
+## Question: What should user-visible text say?
+
+Answered at length in `UX_COPY_EVIDENCE.md`, which is the evidence layer for
+`UX_WRITING_ORACLE.md` and `ERROR_MESSAGE_ORACLE.md`. It runs fifteen
+questions across Google's error-message course and style guide, the Win32
+control and message pages, Visual Studio, the Microsoft Writing Style Guide,
+GOV.UK, NN/g and the four books. It is not duplicated here.
+
+The `writing` module's own evidence — what a message says, in what order —
+remains in the question below it.
+
 ## Question: Which current Windows claims can the books verify?
 
 The books can corroborate interaction principles—keyboard access, visible
 state, grouping, undo, modeless feedback—but cannot verify Windows type ramps,
 UI Automation roles, theme behavior, contrast ratios or text-scale APIs. Those
-remain `PLATFORM REQUIREMENT` claims sourced only to the non-local Tier 1 pages
-in `UI_SOURCE_MATRIX.md`. They must be rechecked if exact current behavior is
-material to implementation.
+remain `PLATFORM REQUIREMENT` claims sourced to the Tier 1 pages in
+`UI_SOURCE_MATRIX.md`, archived under `corpus/platform/` since 4.0.0 so that
+the quoted text is reproducible. The live pages must still be rechecked if
+exact current behavior is material to implementation.
 
 No local source supports numeric spacing, target size, corner radius, animation
 duration or non-text contrast requirements. The oracle intentionally has none.
@@ -412,6 +580,63 @@ a claim that every rule is direct: derived rules remain visibly derived.
 | UI-TEXT-013 | VERIFIED | `GOVUK-DS` error summary and message must match; `WIN7-TEXT` and `MS-STYLE` one term per concept |
 | UI-TEXT-014 | VERIFIED | `MS-STYLE` verb table; place-before-action from `MS-STYLE` and `WIN7-TEXT` |
 | UI-TEXT-015 | VERIFIED | `CLIG` say what changed; `WIN7-TEXT` Notifications on not announcing success |
+
+### Module `imgui` (4.0.0)
+
+| Rule | Verification | Evidence note |
+|---|---|---|
+| UI-IMGUI-001 | VERIFIED | `IMGUI-README` states the accessibility gap; the header confirms the absence |
+| UI-IMGUI-002 | VERIFIED | `IMGUI-H` flag comment; `IMGUI-CPP` controls guide; every Getting Started example |
+| UI-IMGUI-003 | VERIFIED WITH QUALIFICATION | Cursor visibility rules are the header's; the distinctness requirement is the core's `UI-SEL-001` |
+| UI-IMGUI-004 | DERIVED | Submission-order tab traversal follows from the FAQ's no-retained-tree statement |
+| UI-IMGUI-005 | VERIFIED | `IMGUI-FAQ` ID stack section and `IMGUI-H` remedy list, near-verbatim |
+| UI-IMGUI-006 | VERIFIED | `IMGUI-H` popup comments: modals cannot be closed by the user; Escape closes only non-modals |
+| UI-IMGUI-007 | DERIVED | Frame-loop and threading statements are the toolkit's; the consequence for `UI-FB-005` is reasoned |
+| UI-IMGUI-008 | DERIVED | Game-loop assumption and idle caveat from the wiki; cost unquantified by any source |
+| UI-IMGUI-009 | VERIFIED | FAQ DPI section and header scaling identity, quoted |
+| UI-IMGUI-010 | VERIFIED WITH QUALIFICATION | Default-font limits from `IMGUI-FONTS`; the floor is `MS-TYPE`'s |
+| UI-IMGUI-011 | VERIFIED WITH QUALIFICATION | Mechanism from `IMGUI-H`; the 2.25 range is `MS-A11Y-TEXT`'s, transferred |
+| UI-IMGUI-012 | VERIFIED | Tooltip flag defaults from `IMGUI-H`; tightening of `UI-ICON-002` is a module prerogative |
+| UI-IMGUI-013 | VERIFIED WITH QUALIFICATION | Built-in style comments quoted; OS-theme following is derived (no mechanism documented) |
+| UI-IMGUI-014 | VERIFIED WITH QUALIFICATION | `ImGuiCol_` enumeration has no semantic roles; the requirement is `UI-COLOR-005` |
+| UI-IMGUI-015 | VERIFIED WITH QUALIFICATION | Ini-path warning and DockBuilder statement quoted; the default-layout SHOULD is derived |
+| UI-IMGUI-016 | DERIVED | Default move behaviour quoted; the slip argument is Johnson's |
+| UI-IMGUI-017 | VERIFIED | `IMGUI-H` menus comment, quoted |
+| UI-IMGUI-018 | DERIVED | Read-only input and experimental copy documented; the requirement is `UI-A11Y-004`'s residue |
+| UI-IMGUI-019 | VERIFIED | `IMGUI-FAQ` dispatch section, quoted |
+| UI-IMGUI-020 | VERIFIED | `IMGUI-FAQ` non-Latin section and `IMGUI-FONTS`, quoted |
+| UI-IMGUI-021 | VERIFIED | `IMGUI-H` error-recovery seat guidance, quoted |
+
+### Module `cli` (4.0.0)
+
+Checks named in the table are the ones `tools/cli_check.py` performs.
+
+| Rule | Verification | Evidence note |
+|---|---|---|
+| UI-CLI-001 | VERIFIED | `CLIG` The Basics (map codes to failure modes); `GNU-STD` 4.2 (exit status is not a count), 4.8.1–4.8.2 (help and version exit successfully) |
+| UI-CLI-002 | VERIFIED | `CLIG` The Basics; `12F-CLI` §4; `HEROKU-CLI` Stdout/Stderr; `GNU-STD` puts help and version on stdout |
+| UI-CLI-003 | VERIFIED | `12F-CLI` §1 (six routes, `-h` reserved, examples) and §11 (bare invocation); `CLIG` Help; `GNU-STD` 4.8.2 (bug address, home page); `HEROKU-CLI` Description (80 columns, lower case, no period) |
+| UI-CLI-004 | VERIFIED | `GNU-STD` 4.8.1, quoted in full; `12F-CLI` §3 for `-V` and the `version` subcommand |
+| UI-CLI-005 | VERIFIED | `POSIX-12` Guidelines 3–14, quoted; `GNU-STD` 4.8 and the 4.10 table; `CLIG` Arguments and flags; `12F-CLI` §2 for `--` |
+| UI-CLI-006 | VERIFIED | `12F-CLI` §2 (the one/two/three rule, verbatim); `HEROKU-CLI` Flags (the worked example); `CLIG`; `GNU-STD` 4.8 on output files |
+| UI-CLI-007 | VERIFIED | `CLIG` Help (suggest, never run, with both reasons); `12F-CLI` §1 on `subcommand help`; core `UI-ERR-002`, `UI-ERR-003` |
+| UI-CLI-008 | VERIFIED WITH QUALIFICATION | `12F-CLI` §8 and `HEROKU-CLI` (rows, no borders, `--json`); `CLIG` Output; the device-independence clause is `GNU-STD` 4.5 as resolved in C19 |
+| UI-CLI-009 | VERIFIED | The disable list is `CLIG` Output and `12F-CLI` §6 verbatim; `HEROKU-CLI` Colors adds `COLOR=false`; redundancy is core `UI-COLOR-003` |
+| UI-CLI-010 | VERIFIED | `CLIG` Output, four statements; wording delegated to `UI-TEXT-015` |
+| UI-CLI-011 | VERIFIED WITH QUALIFICATION | Form from `GNU-STD` 4.4 and the system-error clause from 4.2; content from `12F-CLI` §5; the last-line rule from `CLIG` Errors, scoped by C13; the label prohibition from `CLIG` Output, reconciled with the `Error:` title in C18 |
+| UI-CLI-012 | VERIFIED | `CLIG` Output, including the `less -FIRX` reasoning |
+| UI-CLI-013 | VERIFIED | `CLIG` Interactivity; `12F-CLI` §7; `HEROKU-CLI` Prompting — three sources, same rule |
+| UI-CLI-014 | VERIFIED | `CLIG` Arguments and flags, and Environment variables, both quoted |
+| UI-CLI-015 | VERIFIED WITH QUALIFICATION | The three grades are `CLIG` verbatim; `12F-CLI` §7 corroborates the typed name; `-f` and `-n` from `GNU-STD` 4.10; reconciled with `UI-DLG-003` in C17 |
+| UI-CLI-016 | VERIFIED | Start-up bands from `12F-CLI` §9; the 100 ms first-output rule and the stalled-bar argument from `CLIG` Robustness |
+| UI-CLI-017 | VERIFIED | `CLIG` Signals and control characters, Interactivity, Robustness |
+| UI-CLI-018 | VERIFIED | `CLIG` Subcommands and Future-proofing; `HEROKU-CLI` on topic roots and `*:list` |
+| UI-CLI-019 | VERIFIED WITH QUALIFICATION | Precedence and XDG from `CLIG` Configuration; `%LOCALAPPDATA%` from `12F-CLI` §12; `TMPDIR` and the installation-tree rule from `GNU-STD` 4.2 and 4.13. No source covers the Windows configuration location beyond cache |
+| UI-CLI-020 | VERIFIED | `CLIG` Future-proofing; `HEROKU-CLI` on stdout after general availability |
+| UI-CLI-021 | VERIFIED | `CLIG` Analytics |
+| UI-CLI-022 | VERIFIED | `POSIX-12` Guidelines 1–2 (two to nine, lower case); `CLIG` Naming; `GNU-STD` 4.5 on invocation name |
+| UI-CLI-023 | VERIFIED | `GNU-STD` 4.2, quoted (limits, truncation, NUL, multibyte, system calls); `CLIG` Robustness on validation |
+| UI-CLI-024 | DERIVED | The TTY heuristic is the sources' shared premise and `GNU-STD` 4.5 is why both cases are reviewed; the profile and gate requirements are the contract's |
 
 ### Core rules
 
@@ -472,7 +697,7 @@ a claim that every rule is direct: derived rules remain visibly derived.
 | UI-DLG-005 | VERIFIED | `JM3` Ch. 15 destructive-default/capture-slip evidence |
 | UI-ERR-001 | DERIVED | Clear/actionable writing synthesized; stricter wording is project-bound |
 | UI-ERR-002 | VERIFIED | `DOET-R` Ch. 5 and `JM3` Ch. 15 |
-| UI-ERR-003 | VERIFIED WITH QUALIFICATION | Direct for voice recognition; explicit analogy to OCR |
+| UI-ERR-003 | VERIFIED WITH QUALIFICATION | Direct for voice recognition (`JM3`) and for design-caused error in general (`DOET-R`); generalised to any machine inference in 4.0.0 |
 | UI-TYPO-001 | VERIFIED | `MS-TYPE` current platform source |
 | UI-TYPO-002 | VERIFIED | `MS-TYPE` stated minimums |
 | UI-TYPO-003 | VERIFIED | `MS-TYPE` stated ramp exclusions |
@@ -490,7 +715,7 @@ a claim that every rule is direct: derived rules remain visibly derived.
 | UI-COLOR-005 | PROJECT-SPECIFIC | Role names/values live in the profile; core only requires consistency |
 | UI-A11Y-001 | DERIVED | Keyboard pattern + platform accessibility baseline; breadth exceeds text page |
 | UI-A11Y-002 | VERIFIED | `MS-A11Y-TEXT` roles |
-| UI-A11Y-003 | VERIFIED | `MS-A11Y-TEXT` `[1, 2.25]` range |
+| UI-A11Y-003 | VERIFIED | `MS-A11Y-TEXT` `[1,2.25]` range |
 | UI-A11Y-004 | VERIFIED | `MS-A11Y-TEXT` equivalent-content requirement |
 | UI-MODE-001 | VERIFIED | `JM3` Chs. 7/15 clear continuous/strong feedback |
 | UI-MODE-002 | DERIVED | Deliberate entry/exit synthesized from mode-error prevention |

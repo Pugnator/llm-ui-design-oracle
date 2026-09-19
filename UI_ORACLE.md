@@ -3,9 +3,14 @@
 ## 1. Purpose
 
 A rule set another LLM can apply when designing, implementing or reviewing the
-user interface of a Windows desktop OCR/learning tool, and — equally important
-— cite. Every rule answers three questions: what to do, who says so, and how to
-test it.
+user interface of a Windows desktop application, and — equally important —
+cite. Every rule answers three questions: what to do, who says so, and how to
+test it. The core names no toolkit and no domain; the `imgui` module binds it
+to Dear ImGui, the `cli` module extends it to command-line programs, and the
+`ocr` and `writing` modules add domain rules (§23). **Everything the product
+says in words is governed by the writing oracle** — `UX_WRITING_ORACLE.md`
+and `ERROR_MESSAGE_ORACLE.md` — which this document defers to rather than
+restates (§23.1).
 
 This document does **not** design the application. It is the authority the
 design is later argued against.
@@ -33,6 +38,11 @@ adoption), `UI_SOURCE_MATRIX.md` (source inventory), `UI_RESEARCH_GAPS.md`
 the rule verification ledger), `UI_CONFLICTS.md` (disagreements and their
 resolutions), `UI_ANTIPATTERNS.md`, `UI_REVIEW_CHECKLIST.md`, `modules/*.md`
 (optional domain rules), and the adopting project's own `UI_PROFILE.md`.
+
+For user-visible text: `UX_WRITING_ORACLE.md` (all copy),
+`ERROR_MESSAGE_ORACLE.md` (errors, warnings, confirmations, diagnostics),
+`TERMINOLOGY.md` (controlled vocabulary), `UI_COPY_REVIEW_CHECKLIST.md` (the
+procedure), and `UX_COPY_EVIDENCE.md` (their evidence layer).
 
 ### Provenance tags
 
@@ -105,6 +115,13 @@ Explicitly **not** in class: websites, dashboards, mobile apps, touch-first
 apps, consumer single-purpose utilities. Guidance written for those is filtered
 before use (§25).
 
+**Command-line programs** are a different class with a different first
+question — is the output being read by a person at a terminal, or by another
+program? — and are covered by the `cli` module. A profile that enables it
+classifies such surfaces as `cli` in the posture map, and the reviewer's first
+question for them is the module's, not this section's. Full-screen terminal
+programs are neither: treat them as sovereign desktop surfaces under the core.
+
 Input priority, in order: mouse + keyboard; keyboard-heavy expert use; touch as
 secondary. Touch support MUST NOT degrade the first two (§13).
 
@@ -135,10 +152,20 @@ ed.) was added to `docs/` after the first draft and has now been read.
 `UI-ERR-003` were re-grounded on him as the origin of the slip/mistake
 taxonomy. Conflict C8 (missing source) is closed.
 
+**Revision, 4.0.0 (2026-09-19).** The Tier 1 Windows pages this document
+quotes are now archived under `corpus/platform/`, each with URL, fetch date,
+licence and the page's own `ms.date`, and the quotations in §17, §19 and §20
+were checked against the archived text. Toolkit documentation is a new source
+class — **Tier 1 (toolkit)**: authoritative on what a toolkit does, silent on
+design — introduced for the `imgui` module. Domain wording that had leaked
+into the core from its first adopter was removed; `UI-ERR-003` was generalised
+without changing its proposition or level.
+
 The four local books are the primary reproducible evidence base. Current
-Windows pages remain authoritative for platform behavior and accessibility,
-but this repository has no local snapshots of them; that limitation is explicit
-in the matrix. Full inventory, dates and completeness: `UI_SOURCE_MATRIX.md`.
+Windows pages remain authoritative for platform behavior and accessibility;
+since 4.0.0 the pages the core cites are archived under `corpus/platform/`,
+which makes the quoted text reproducible but does not make it current — the
+matrix records the snapshot date, and the live page wins where they differ. Full inventory, dates and completeness: `UI_SOURCE_MATRIX.md`.
 Question-level evidence and the rule-by-rule audit: `UI_EVIDENCE.md`.
 
 ### Legacy classification
@@ -296,8 +323,10 @@ judging what just happened. Cooper makes the same point from the other side,
 contrasting the implementation model with the user's mental model
 (Appendix A.6, A.1).
 
-**Domain note.** This application has an unusually long object chain (§23).
-Whether the user can see that chain *is* the conceptual-model question here.
+**Domain note.** Where a project's objects form a long derivation chain — a
+source, what was extracted from it, what was looked up about that — whether
+the user can see the chain *is* the conceptual-model question. The `ocr`
+module describes one such chain (§23); a profile should draw its own.
 
 **Sources.** Norman Ch. 2 (pp. 72–73); Cooper Ch. 1 (PDF p. 46).
 
@@ -433,20 +462,21 @@ stale document reference.
 
 ### UI-ARCH-003 — Keep source and derived content visible together
 **Level:** SHOULD **Authority:** Tier 2 **Confidence:** MEDIUM
-**Provenance:** DERIVED RULE (domain-derived — see §23)
+**Provenance:** DERIVED RULE (applied to recognised text by the `ocr` module, §23)
 
-When the user is judging or correcting derived content (recognised text) the
-source (the image region) SHOULD remain visible without navigation.
+When the user is judging or correcting derived content — a recognised string, a
+parsed value, a computed result — the source it was derived from SHOULD remain
+visible without navigation.
 
 **Rationale.** Correction is a comparison task. Johnson Ch. 7 puts working
 memory at a few items, easily disrupted; forcing a context switch means holding
-the image in memory while looking at text. Cooper's modeless-feedback argument
-(Ch. 15) points the same way.
+the source in memory while looking at the result. Cooper's modeless-feedback
+argument (Ch. 15) points the same way.
 
 **Sources.** Johnson Ch. 7; Cooper Ch. 15 (PDF p. 388).
 
-**Review test.** During correction, can the user see the pixels the text came
-from without clicking anything?
+**Review test.** During correction, can the user see the source the result
+came from without clicking anything?
 
 ---
 
@@ -774,7 +804,7 @@ visual styling is chosen:
 | Hover | What is temporarily under the pointer? |
 | Text caret | Where will typed text be inserted? |
 | Inspected item | Which object's properties are being shown? |
-| OCR region/token | Which domain unit is the subject at this granularity? |
+| Domain unit (a region, a token, a record — as a module or profile defines it) | Which domain unit is the subject at this granularity? |
 | Multi-selection anchor/lead | Which item defines extension and which item has current detail? |
 
 An element may carry more than one state simultaneously. That does not permit
@@ -801,8 +831,9 @@ p. 113), and Ch. 8 (book pp. 379–380); Cooper Ch. 18, “Pointing, Selection,
 and Direct Manipulation” (book p. 480, PDF p. 510). Current Windows focus-
 visual details remain a matrix gap.
 
-**Review test.** In a screenshot containing a selected OCR region, an active
-document, an inspected token and a focused editor, can each state be named?
+**Review test.** In a screenshot containing a selected domain object, an
+active document, an inspected item and a focused editor, can each state be
+named?
 Tab through: is the input destination continuously visible? Move the pointer:
 does hover obscure or impersonate any persistent state?
 
@@ -828,7 +859,7 @@ Still selected?
 
 ### UI-SEL-003 — Linked highlighting across representations
 **Level:** SHOULD **Authority:** Tier 2 **Confidence:** MEDIUM
-**Provenance:** DERIVED RULE (domain-derived — §23)
+**Provenance:** DERIVED RULE (applied to OCR by the `ocr` module, §23)
 
 When one object is shown in several places at once, selecting it in one place
 SHOULD highlight it in all of them.
@@ -1351,6 +1382,11 @@ guidelines, the Microsoft Writing Style Guide and clig.dev. A project that
 lists `writing` under `modules` binds this rule to it. `UI-TEXT-001` is the
 operative form of this rule there — the same three parts, with a ceiling.
 
+Since 5.0.0 the binding extends: `UX_WRITING_ORACLE.md` governs every string,
+and `ERROR_MESSAGE_ORACLE.md` governs whether this message should exist, what
+severity it carries, where it appears, and which of its five layers each fact
+belongs to (§23.1). This rule states the principle; those state the practice.
+
 **Sources.** Guidelines overview (Writing); Johnson Ch. 6.
 
 **Review test.** Does the message state a result or an action? Remove every
@@ -1381,12 +1417,15 @@ mistake.
 
 ---
 
-### UI-ERR-003 — Recognition failure is not user error
+### UI-ERR-003 — A wrong machine inference is not user error
 **Level:** MUST **Authority:** Tier 4 + Tier 2 **Confidence:** HIGH
-**Provenance:** SOURCE RULE (directly on point for this domain)
+**Provenance:** SOURCE RULE (Johnson states it for speech recognition; Norman
+states the general case)
 
-When recognition fails or misrecognises, the interface MUST NOT blame the user
-or present it as user error.
+When the system inferred, guessed or recognised something and got it wrong — a
+recognised string, a parsed value, an autocorrection, a detected format, a
+suggested command — the interface MUST NOT blame the user or present it as
+user error.
 
 **Rationale.** Johnson Ch. 15 ends with exactly this: *"Voice-Recognition
 Failure and Misrecognition are Not User Errors."* Norman devotes a chapter to the general case, under the title
@@ -1396,9 +1435,15 @@ makes it a deficiency of the design rather than of the person. The conclusion
 he draws is that systems should help people translate their goals into the
 form the machine needs — not record their failure to do it unaided.
 
-Applied here: the system guessed, and guessing is its job. A misread is a
-deficit in the recogniser, and the interface's task is to make correction easy
-(`UI-OCR-002`), not to report a fault.
+Applied generally: the system guessed, and guessing is its job. A wrong guess
+is a deficit in the guesser, and the interface's task is to make correction
+easy, not to report a fault. The `ocr` module applies this to recognised text
+(`UI-OCR-004`); the `cli` module to a mistyped command, which is suggested
+and never run (`UI-CLI-007`).
+
+**Revision, 4.0.0.** Until 3.0.0 this rule was worded for OCR. The
+proposition and level are unchanged; the scope is now every machine inference,
+which is the case Norman's chapter actually argues.
 
 **Sources.** Norman Ch. 5 (pp. 181, 234–235); Johnson Ch. 15, final section.
 
@@ -1492,7 +1537,7 @@ Running text SHOULD be **50–60 characters per line**; *"Don't use fewer than 2
 characters or more than 60 characters per line as this is difficult to read."*
 
 **Applicability.** Prose — definitions, meanings, explanations. Not labels,
-table cells or recognised-text lines, whose length is set by the source.
+table cells or content lines whose length is set by the data.
 
 **Review test.** Measure a definition paragraph at default width.
 
@@ -1652,8 +1697,8 @@ sparingly.
 
 **Rationale.** Microsoft: accent is *"used to emphasize important elements… and
 to indicate the state of an interactive object"*, *"used sparingly"*, and is
-user-chosen — *"Color is personal."* Cooper warns that heavy colour that
-delights newcomers *"seem[s] garish after a couple of weeks of daily use."*
+user-chosen — *"Color is personal."* Cooper warns that big, colourful controls that impress newcomers *"seem
+garish after a couple of weeks of daily use."*
 
 **Sources.** Color in Windows; Cooper Ch. 9 (PDF p. 241).
 
@@ -1715,7 +1760,7 @@ a TextBox misreports both role and interaction model."*
 **Provenance:** SOURCE RULE
 
 Layout MUST remain usable across the system text-scale range. `TextScaleFactor`
-is *"a `double` in the range [1, 2.25]"*. `IsTextScaleFactorEnabled` defaults to
+is *"a `double` in the range [1,2.25]"*. `IsTextScaleFactorEnabled` defaults to
 true and MUST be left enabled unless there is a specific reason.
 
 **Also stated:** *"Do not assume uniform scaling across all text sizes. Larger
@@ -1734,9 +1779,13 @@ text is generally affected less than smaller text."*
 *"Avoid embedding text in graphics when possible"*; where required, set
 `AutomationProperties.Name` to equivalent content.
 
-**Domain note.** Directly relevant here: the image under an OCR overlay is a
-graphic containing text. The recognised text is the accessible equivalent, and
-that is an argument for exposing it as real text rather than as painted pixels.
+**Domain note.** Any image that contains text — a scanned page, a screenshot,
+a rendered chart — is a graphic containing text. Where the application has the
+text (it recognised it, or it drew it), that text is the accessible
+equivalent, and that is an argument for exposing it as real text rather than
+as painted pixels. A toolkit without an accessibility tree cannot expose it at
+all; the `imgui` module says what is reported then, and what survives of the
+rule (`UI-IMGUI-018`).
 
 **Sources.** Accessible text requirements.
 
@@ -1861,16 +1910,47 @@ to confirmation dialogs.
 
 ## 23. Domain modules
 
-The core carries no domain. Domain rules live in `modules/<id>.md` and a
-project opts into them through its profile.
+The core carries no domain and names no toolkit. Domain and toolkit rules live
+in `modules/<id>.md` and a project opts into them through its profile.
 
 | Module | ID | Rule prefix | Covers |
 |---|---|---|---|
 | OCR and text recognition | `ocr` | `UI-OCR-` | Correspondence between image, region, recognised text, token and lookup; correction workflows; confidence display |
 | Writing | `writing` | `UI-TEXT-` | What a message says and in what order; the words to avoid; voice, case and punctuation; where detail goes; dialog titles and buttons; the same words for the same problem everywhere |
+| Dear ImGui | `imgui` | `UI-IMGUI-` | Which core rules the toolkit can meet, meets in another form, or cannot meet (`N/A (TOOLKIT)`); keyboard navigation, IDs, modals, the frame budget, DPI and fonts, themes, persistence, input dispatch |
+| Command line | `cli` | `UI-CLI-` | Exit codes and streams; help and version; POSIX/GNU option syntax; human and machine output; colour and TTY detection; errors; prompts, secrets and confirmation; responsiveness and interrupts; subcommands, configuration and interface stability. Nearly every rule is a MUST and most are checked automatically by `tools/cli_check.py` |
+
+### 23.1 The writing oracle
+
+The core says almost nothing about wording, and deliberately. Three documents
+carry it, and this document defers to them:
+
+| Document | Prefix | Governs |
+|---|---|---|
+| `modules/writing.md` | `UI-TEXT-` | Sentence mechanics: the three parts of a problem report, the word list, voice, case, punctuation, buttons, one term per concept |
+| `UX_WRITING_ORACLE.md` | `UX-TEXT-` | Every string: register, concision, the reader's perspective, per-surface rules, and the anti-patterns of generated text (`AP-31` … `AP-39`) |
+| `ERROR_MESSAGE_ORACLE.md` | `UX-ERR-` | Whether a condition is reported at all, its severity class, its surface, the five information layers, diagnostics, confirmations |
+
+The three are cumulative, not alternatives: `modules/writing.md` is the
+sentence, `UX_WRITING_ORACLE.md` is the string, `ERROR_MESSAGE_ORACLE.md` is
+the decision to say anything. Where they overlap the stricter governs, and the
+later document names the earlier rule it tightens.
+
+`UI-ERR-001` binds here: a project that lists `writing` under `modules` binds
+its writing standard to that module, and enabling the writing oracle binds it
+to all three. `TERMINOLOGY.md` is the vocabulary they share.
+
+A rule in this document that concerns wording — `UI-ERR-001`, `UI-ERR-003`,
+`UI-CMD-005`, `UI-DLG-002` … `UI-DLG-005` — states the interaction
+requirement only. The words that satisfy it are the writing oracle's business.
+
+---
 
 A module MUST NOT weaken a core rule. It MAY add rules, and MAY make a core
-SHOULD into a MUST for its domain — tightening is always allowed, loosening
+SHOULD into a MUST for its domain. A module MAY declare itself **automated**:
+its rules then name the check that decides each one, it ships the checker, and
+the contract requires a clean run for conformance (`UI_ORACLE_CONTRACT.md`
+§6). `cli` is the first such module — tightening is always allowed, loosening
 requires a derogation (`UI_ORACLE_CONTRACT.md` §5).
 
 To add a module: copy the structure of an existing one, claim a rule prefix in
@@ -2081,10 +2161,11 @@ commands immediately at hand and notes that experienced users can work
 efficiently with dense information/selectors. Ch. 4 shows that low density can
 weaken grouping rather than improve it.
 
-For the OCR relationship problem, Ch. 9 is especially direct: Data Brushing
-selects the same data simultaneously in several views, while coordinated views
-may synchronize selection, zoom and panning. This is the local source behind
-linked selection; applying it to image regions, recognized strings and tokens is
+For linked representations of one object, Ch. 9 is especially direct: Data
+Brushing selects the same data simultaneously in several views, while
+coordinated views may synchronize selection, zoom and panning. This is the
+local source behind linked selection; applying it to a particular domain's
+objects — image regions, recognised strings and tokens in the `ocr` module — is
 a declared domain transfer, not an invented consensus.
 
 ### A.9 What no source supplied

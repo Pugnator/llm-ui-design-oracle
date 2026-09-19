@@ -5,7 +5,7 @@ change. The point of the contract is that a rule ID means the same thing in
 every project that cites it, and that "we follow the oracle" is a checkable
 claim rather than a sentiment.
 
-**Contract version:** 1.0.0 — see `VERSION` for the oracle version in this
+**Contract version:** 1.1.0 — see `VERSION` for the oracle version in this
 copy.
 
 ---
@@ -22,15 +22,23 @@ UI_RESEARCH_GAPS.md     resolved and open research gaps
 UI_CONFLICTS.md         source disagreements and their resolutions
 UI_ANTIPATTERNS.md      review catalogue
 UI_REVIEW_CHECKLIST.md  the review form
+UX_WRITING_ORACLE.md    rules for every user-visible string
+ERROR_MESSAGE_ORACLE.md rules for errors, warnings and confirmations
+UX_COPY_EVIDENCE.md     their evidence layer
+UI_COPY_REVIEW_CHECKLIST.md  the copy review procedure
+TERMINOLOGY.md          controlled vocabulary (Part 2 is the project's)
 UI_ORACLE_CONTRACT.md   this file
 VERSION                 the semantic version of the core
-modules/<id>.md         optional domain modules
+modules/<id>.md         optional domain and toolkit modules
+corpus/<set>/           archived source text, with URL, date and licence per file
+img/*.svg               generated figures
 ```
 
 The **profile** — written by the adopting project, never shared:
 
 ```
 UI_PROFILE.md           this project's bindings, conventions and derogations
+TERMINOLOGY.md, Part 2  the project's own controlled vocabulary
 ```
 
 A project that has a profile and an unmodified core is **conformant**. A
@@ -83,6 +91,10 @@ So that two projects can extend the oracle without colliding.
 | `UI-GLOBAL-`, `UI-ARCH-`, `UI-NAV-`, `UI-LAY-`, `UI-CMD-`, `UI-SEL-`, `UI-EDIT-`, `UI-KBD-`, `UI-MOUSE-`, `UI-FB-`, `UI-DLG-`, `UI-ERR-`, `UI-TYPO-`, `UI-ICON-`, `UI-COLOR-`, `UI-A11Y-`, `UI-MODE-`, `UI-EXP-` | **Core only** | Project-neutral rules |
 | `UI-OCR-` | Module `ocr` | Domain rules |
 | `UI-TEXT-` | Module `writing` | The words on the screen: messages, labels, buttons, status text |
+| `UI-IMGUI-` | Module `imgui` | Binding the core to Dear ImGui: what the toolkit cannot do, what it does differently, what immediate mode requires |
+| `UI-CLI-` | Module `cli` | Command-line programs: streams, exit codes, help, flags, prompts, signals, configuration |
+| `UX-TEXT-` | `UX_WRITING_ORACLE.md` | Every user-visible string: register, concision, perspective, per-surface rules |
+| `UX-ERR-` | `ERROR_MESSAGE_ORACLE.md` | Whether a condition is reported, its class, surface, layers and diagnostics |
 | `AP-` | Core anti-patterns | — |
 | `<PROJECT>-` e.g. `KL-` | The adopting project | Project conventions, in the profile |
 
@@ -121,6 +133,14 @@ Rules:
 Disagreeing with a rule in general is not a derogation — it is a change
 request against the core (§7).
 
+**Toolkit limitations.** A rule that the declared UI toolkit *cannot*
+implement — not will not, cannot — is neither passed nor derogated. Where an
+enabled toolkit module (`imgui`) states this for a named rule, a review reports
+that rule as **N/A (TOOLKIT)**, and the profile lists it under *Known
+non-conformance* citing the module. The bar on derogating accessibility MUSTs
+stands: a project in this position is non-conformant on that rule and says so.
+A project MUST NOT claim a toolkit limitation that the module does not state.
+
 ---
 
 ## 6. Conformance levels
@@ -137,6 +157,32 @@ A profile declares one:
 "Adopting" is an honest starting state and most projects begin there. Claiming
 "Full" without a completed checklist run is a false claim, and the checklist
 exists so the claim can be checked.
+
+**Qualifier.** When an enabled toolkit module reports `N/A (TOOLKIT)` on any
+MUST, the declared level MUST carry the qualifier **(toolkit-limited)** — for
+example `Core (toolkit-limited)` — and the profile's *Known non-conformance*
+table lists the rules. The qualifier is not a derogation and does not expire;
+it is removed only when the toolkit gains the capability or the project
+changes toolkit.
+
+**Automated modules.** A module MAY declare itself automated: it names, for
+each rule, the check that decides it, and it ships the checker. `cli` is the
+first, with `tools/cli_check.py`. Where a project enables an automated module:
+
+1. the profile MUST name the checker's config file in its bindings table;
+2. any declared conformance level MUST be backed by a checker run with **zero
+   FAIL**, recorded in the profile's review log with the date, the checker
+   version and the oracle version;
+3. a rule the checker reports as FAIL MUST NOT be reported as PASS by a human
+   reviewer. It is fixed, or it is a derogation under §5, or the claim is
+   withdrawn;
+4. a rule the checker reports as NEEDS HUMAN JUDGMENT is answered by the
+   reviewer, not by the run;
+5. a check reported N/A because the platform cannot perform it stays N/A; the
+   reviewer answers the underlying question by hand and says so.
+
+An automated module's rules are not weaker where no check exists. A rule
+marked *manual* is a MUST like any other; it simply has no mechanical test.
 
 ---
 
@@ -193,7 +239,8 @@ Oracle version : <from VERSION>
 Modules        : <ids, or none>
 Profile        : <project> <profile version>
 Conformance    : <declared level>
-Result         : n PASS, n FAIL, n N/A, n NEEDS HUMAN JUDGMENT, n DEROGATED
+Checker        : <tool and version, and the date of the clean run, per automated module>
+Result         : n PASS, n FAIL, n N/A, n N/A (TOOLKIT), n NEEDS HUMAN JUDGMENT, n DEROGATED
 ```
 
 Each finding cites a rule ID and its class — **platform requirement** (Tier 1),

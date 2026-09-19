@@ -177,10 +177,11 @@ as excise.
 
 **Positions**
 
-- **Tier 1.** Typography: *"Minimum values — 14px Semibold, 12px Regular. Text
-  smaller than these sizes and weights are illegible in some languages."*
+- **Tier 1.** Typography gives the minimums as a table row — *"Minimum
+  values"*, *"14px Semibold, 12px Regular"* — with the note *"Text smaller
+  than these sizes and weights are illegible in some languages"*.
   Accessibility: text must survive `TextScaleFactor` up to **2.25**.
-- **Pressure from the domain.** A dense OCR workspace invites shrinking text to
+- **Pressure from the domain.** A dense workspace invites shrinking text to
   fit more panes.
 
 **Cause**
@@ -190,9 +191,9 @@ Not a source conflict — a source constraint colliding with a design wish.
 **Resolution**
 
 The minimums are treated as a hard floor (`UI-TYPO-002`, MUST). The Microsoft
-wording — *"illegible in some languages"* — is decisive for this application in
-particular, which renders Japanese: the same page assigns **Yu Gothic UI** as
-the Japanese UI font, and CJK glyphs carry more strokes per em than Latin.
+wording — *"illegible in some languages"* — is decisive for any project whose
+profile lists a CJK script: the same page assigns **Yu Gothic UI** as the
+Japanese UI font, and CJK glyphs carry more strokes per em than Latin.
 Density is bought with layout, not with type size.
 
 **Confidence** HIGH.
@@ -335,7 +336,7 @@ frequency.
 
 **Resolution**
 
-The oracle neither mandates nor bans OCR modes. If the architecture uses them,
+The oracle neither mandates nor bans modes. If the architecture uses them,
 `UI-MODE-001` … `003` require visible status, explicit entry/exit and preference
 for spring-loaded or bounded exceptional modes. Test the alternative for
 description slips rather than manufacturing a compromise by adding controls.
@@ -393,6 +394,11 @@ The module takes the GUI position for every surface it covers. `CLIG`'s
 rule is recorded here so a reviewer who knows it does not apply it to a
 dialog, and so a project with a terminal surface knows it exists. `UI-TEXT-001`
 orders a message *happened / means / do* from the top.
+
+**4.0.0.** The `cli` module takes `CLIG`'s position for surfaces classified
+`cli` (`UI-CLI-011`): the three-part shape is unchanged, and the part that
+tells the operator what to do is printed last, because that is where the eye
+lands when the prompt returns.
 
 **Confidence** HIGH. `CLIG` states its own scope ("if you are creating a GUI
 program, this guide is not for you").
@@ -468,5 +474,245 @@ make the operator its subject.
 
 **Confidence** HIGH. The Microsoft sources state the exception explicitly;
 the resolution only orders them.
+
+---
+
+## C16 — A toolkit's stated scope vs. a product built on it (Dear ImGui)
+
+**Positions**
+
+- **Tier 1 (toolkit), `IMGUI-README`:** the library is for *"content creation
+  tools and visualization / debug tools (as opposed to UI for the average
+  end-user)"*, and *"full internationalization … and accessibility features
+  are not supported."* `IMGUI-CPP`: *"Designed primarily for developers and
+  content-creators, not the typical end-user!"*
+- **Tier 1 (toolkit), `IMGUI-FAQ`:** *"Can you create elaborate/serious tools
+  with Dear ImGui? Yes … built to be efficient and scalable toward the needs
+  for AAA-quality applications running all day."*
+- **The contract, §5:** accessibility MUSTs may not be derogated; a project
+  that cannot meet them is non-conformant and says so.
+
+**Cause of the difference**
+
+Not a disagreement between sources. A toolkit states its own scope; a project
+decides to use it beyond that scope; the contract has no vocabulary for "the
+rule is right and the toolkit cannot do it", so a review must either pass a
+rule that was not met or fail it forever.
+
+**Resolution**
+
+The oracle does not adjudicate toolkit choice. The contract gains a reporting
+class, `N/A (TOOLKIT)` (§5), and a conformance qualifier, `(toolkit-limited)`
+(§6), so that a review states the limit rather than hiding it. The `imgui`
+module lists, rule by rule, what the toolkit cannot do (three rules, all
+accessibility), what it does in another form (restated as `UI-IMGUI-` rules)
+and what applies unchanged. Everything the toolkit *can* do — keyboard
+navigation, a text scale, tooltips for every icon — is required in full,
+because the toolkit's scope statement excuses only what it excludes.
+
+**Confidence** HIGH (direct observation of the source's scope statements and
+of the public header).
+
+---
+
+## C17 — "Confirm only the unrecoverable" vs. graded confirmation on the command line
+
+**Positions**
+
+- **Tier 1, `MS-COMMAND` (as `UI-DLG-003`):** confirm only actions that
+  *"can't be undone and have major consequences"*; for everything reversible,
+  offer undo instead, because confirmations *"are a hindrance whenever the
+  user is trying to perform an action intentionally."*
+- **Tier 2, `CLIG` Arguments and flags, corroborated by `12F-CLI` §7 (typing
+  the app name again to confirm a destroy):** three grades — *mild* (*"you might
+  want to prompt for confirmation, you might not"*), *moderate* (*"You usually
+  want to prompt … Consider giving the user a way to 'dry run'"*), *severe*
+  (*"make it hard to confirm by accident … type something non-trivial such as
+  the name of the thing"*) — and always a flag (`--force`,
+  `--confirm=<name>`) so a script can answer.
+
+**Cause of the difference**
+
+The medium. The GUI rule rests on undo being available as the alternative to
+asking; a command-line operation generally has no undo, and it is also run by
+scripts that cannot answer a prompt at all.
+
+**Resolution**
+
+One principle, different substitutes. On a `cli` surface, "recoverable" is
+supplied by a dry run and an explicit verb rather than by undo; confirmation
+scales with consequence rather than being binary; and every prompt has a flag
+equivalent so that the confirmation never becomes a hang (`UI-CLI-015`,
+`UI-CLI-013`). `UI-DLG-003` is unchanged for GUI surfaces. Both sources agree
+on the point that matters most: a confirmation answered by reflex protects
+nobody, which is why the severe grade asks for a typed name and the GUI rule
+forbids a destructive default (`UI-DLG-005`).
+
+**Confidence** HIGH.
+
+---
+
+## C18 — What an error line starts with
+
+**Positions**
+
+- **Tier 2, `GNU-STD` 4.4 Formatting Error Messages:** a noninteractive
+  program's error is *"program: message"* or
+  *"program:sourcefile:lineno: message"*; the message *"should not begin with
+  a capital letter when it follows a program name"* and *"should not end with
+  a period."* In an *interactive* program *"it is better not to include the
+  program name … The place to indicate which program is running is in the
+  prompt."*
+- **Tier 2, `12F-CLI` §5:** a great error message contains, as five bullets,
+  an *"Error code"*, an *"Error title"*, an *"Error description (Optional)"*,
+  *"How to fix the error"* and a *"URL for more information"*; the worked
+  example opens `Error: EPERM - Invalid permissions on myfile.out`.
+- **Tier 2, `CLIG` Output:** *"Don't treat stderr like a log file, at least
+  not by default. Don't print log level labels (ERR, WARN, etc.) or extraneous
+  contextual information, unless in verbose mode."*
+
+**Cause of the difference**
+
+Three different jobs for the first few characters. GNU is identifying the
+*speaker*, which matters when output is interleaved from a pipeline or a
+build. `12F-CLI` is identifying the *kind* of thing, which matters when a
+person is scanning a screen. `CLIG` is rejecting a *severity level*, which is
+a log file's vocabulary and tells the reader nothing they cannot see.
+
+**Resolution**
+
+They are compatible once the three are separated. `UI-CLI-011` requires the
+GNU form — the program name, lower case after it, no trailing period — because
+that is the one a machine and a pipeline can rely on. A single `Error:` title
+line is permitted as `12F-CLI` shows it, since a title is not a level. A
+log-level label (`ERR`, `WARN`, `INFO`, `DEBUG`) is forbidden outside verbose
+mode, as `CLIG` says. The checker enforces the last two automatically and
+raises the GNU prefix as a question when it is absent, because a program may
+legitimately be interactive at that moment.
+
+**Confidence** HIGH. Each source is explicit and none contradicts another
+once the subject of each statement is read.
+
+---
+
+## C19 — "Never depend on the output device" vs. the TTY heuristic
+
+**Positions**
+
+- **Tier 2, `GNU-STD` 4.5 Standards for Interfaces Generally:** *"please
+  don't make the behavior of a command-line program depend on the type of
+  output device it gets as standard output or standard input. Device
+  independence is an important principle of the system's design; do not
+  compromise it merely to save someone from typing an option now and then."*
+  It allows one exception, for binary output to a terminal, and concedes that
+  *"Variation in error message syntax when using a terminal is ok."*
+- **Tier 2, `CLIG` Output, and `12F-CLI` §6, and `HEROKU-CLI`:** the TTY
+  heuristic is the foundation — colour, spinners, progress bars, pagers and
+  prompts all switch on whether the stream is a terminal. *"If stdout is not
+  an interactive terminal, don't display any animations."*
+
+**Cause of the difference**
+
+Age and subject. GNU is defending the *content* of output: `ls` giving
+different columns to a pipe than to a screen is a trap for scripts, and GNU
+supplies `dir` precisely to escape it. The newer guides are switching
+*presentation*: the same records, with or without colour and cursor motion.
+GNU's own concession about error syntax shows the line it is drawing.
+
+**Resolution**
+
+Content is device-independent; presentation is not. `UI-CLI-008` requires the
+data and its meaning to be identical either way, which is GNU's principle, and
+is why `--json` and `--plain` exist rather than a hidden change of format.
+`UI-CLI-009` and `UI-CLI-012` require colour, animation and paging to switch
+off when the stream is not a terminal, which is the newer guides' point and
+which GNU's text does not actually forbid. Where a program must change
+*content* — a listing that is a table for a person and one record per line for
+a pipe — it does so under an explicit flag, never by detection.
+
+**Confidence** HIGH. The resolution is GNU's own distinction, applied to
+features GNU predates.
+
+---
+
+## C20 — May a product ever be funny, or sorry?
+
+**Positions**
+
+- **Tier 2, `GERR` Set the tone:** *"Don't attempt to make error messages
+  humorous"*, because *"Errors frustrate users. Angry users are generally not
+  receptive to humor"* and *"Users can misinterpret humor."* On apology:
+  *"avoid the words 'sorry' or 'please.'"*
+- **Tier 3, `WIN7-TEXT` Style and Tone**, and **Tier 2, `GOVUK-DS`**: the same
+  position, already recorded as `C14` — both words reserved for a real cost to
+  the reader.
+- **Tier 2, `NNG-ERR`:** agrees for the ordinary case (*"Avoid humor since it
+  can become stale if users encounter the error frequently"*) and then makes an
+  exception: *"Mitigate total failure with novelty … sometimes users may
+  encounter an error so catastrophic … there is no recourse but to wait or try
+  again later. It's these specific moments … where blending an apology with
+  something surprising or novel may salvage a disappointing situation."*
+- **Tier 2, `DI3` Ch. 10, Error Messages:** *"Be polite: 'Sorry, but something
+  went wrong! Please click Go again' versus 'JavaScript Error 693'."*
+
+**Cause of the difference**
+
+Stakes and medium. NN/g scopes its own exception three times in the sentence
+that states it — *"so catastrophic"*, *"which should be rare and avoided at
+all costs"*, *"low-stakes experiences"* — and its examples are consumer
+services during a total outage. Tidwell's contrast case is a raw JavaScript
+error, so her example argues against jargon more than it argues for apology;
+the same page's other guidance (*"Use ordinary language, not computerese"*)
+is what the sentence is really doing.
+
+**Resolution**
+
+The default is the majority position and is already `UI-TEXT-004`:
+neither word unless the reader has borne a cost, and no humour. `UX-TEXT-002`
+and `UX-TEXT-003` carry it. NN/g's exception is preserved rather than
+suppressed, and scoped to what NN/g itself scopes it to: a consumer product's
+total-outage page, never a professional tool reporting an operational
+condition. Tidwell's example is not adopted; her adjacent rule against
+computerese is, at `UX-TEXT-016`.
+
+**Confidence** HIGH. Four sources agree on the default and the two dissents
+carry their own scope statements.
+
+---
+
+## C21 — Warm voice, or no voice?
+
+**Positions**
+
+- **Tier 2, `GSTYLE` Voice and tone:** aim for *"conversational, friendly, and
+  respectful"*; *"Try to sound like a knowledgeable friend"*; *"Be human, let
+  your personality show, and be memorable."*
+- **Tier 1, `MS-WRITING`:** three voice principles, warm register, *"warm and
+  relaxed"*.
+- **Tier 2, `GOVUK-WG` Use the right tone:** *"emotionless"*, *"brisk, but not
+  terse"*.
+- **Tier 3, `W32-CTRL` Tooltips:** *"Don't use language that sounds like
+  marketing."* **Tier 3, `WIN7-TEXT` Style and Tone** lists tones to avoid.
+
+**Cause of the difference**
+
+Medium, and it is visible inside single organisations. Google asks for warmth
+in *developer documentation*, which the reader opened deliberately and reads
+at length; the same company's error-message course, addressing UI strings,
+forbids apology and humour and demands concision. Microsoft asks for warmth in
+app copy and forbids marketing register in tooltips. The variable is not the
+publisher but whether the reader chose to read.
+
+**Resolution**
+
+Not resolvable into one register, and the oracle does not pretend otherwise —
+`modules/writing.md` already recorded this as something it deliberately does
+not say. `UX-TEXT-001` fixes the professional-tool end of the range as the
+default for this oracle's target class and makes register a declared profile
+choice rather than an accident. Every other rule in the writing oracle applies
+at any register: warmth never licenses padding, narration or blame.
+
+**Confidence** HIGH for the diagnosis. The register choice itself is a product
+decision, not an evidentiary one.
 
 ---

@@ -1,0 +1,24 @@
+{
+  "profile": "myproject 1.0.0",
+  "subcommands": ["list", "add", "remove", "sync"],
+  "aliases": ["ls"],
+  "list_command": ["list"],
+  "failing": [
+    {"args": ["add"], "exit": 2},
+    {"args": ["remove", "does-not-exist"], "exit": 1}
+  ],
+  "option_order": [["list", "--all"], ["--all", "list"]],
+  "positional_command": ["add"],
+  "destructive": [
+    {"args": ["remove", "something"]}
+  ],
+  "long_running": {
+    "args": ["sync", "--all"],
+    "first_output_ms": 100,
+    "interrupt_after_s": 1.0,
+    "exit_within_s": 5.0
+  },
+  "reads_stdin": [["add", "-"]],
+  "allow_files": [],
+  "prompts": true
+}

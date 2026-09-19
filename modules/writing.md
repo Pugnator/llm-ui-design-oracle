@@ -164,8 +164,8 @@ Win32 Error Messages lists the words, with replacements: *error/failure* →
 *abort/kill/terminate* → *stop*; *catastrophic/fatal* → *serious*; and:
 "don't use phrasing that blames the user or implies user error … use the
 passive voice when the user is the subject and might feel blamed for the error
-if the active voice were used". GOV.UK Error message: do not use *"forbidden,
-illegal, you forgot, prohibited"*, nor *"valid and invalid because they do
+if the active voice were used". GOV.UK Error message: do not use *"words like 'forbidden', 'illegal', 'you
+forgot' and 'prohibited'"*, nor *"valid and invalid because they do
 not add anything to the message"*. `MS-WRITING`: "more than anything else,
 it's important that your error message doesn't blame the user". `MS-STYLE`
 Verbs lists, as the first use of the passive: "avoiding condescending text or
@@ -629,3 +629,20 @@ is now true that was not? If it was obvious, was it announced anyway?
 
 See `UI_ANTIPATTERNS.md` AP-23 to AP-26: the wall of text, the verdict word,
 the apology as tone, and the transport as the message.
+
+## Relationship to the writing oracle (5.0.0)
+
+This module is the **sentence**: what a message says, in what order, in which
+words. Two further documents sit above it and are cumulative with it, never
+alternatives:
+
+- `UX_WRITING_ORACLE.md` (`UX-TEXT-`) governs every string on every surface —
+  register, concision, the reader's perspective, buttons, tooltips, status,
+  progress, empty states, settings, validation — and catalogues the
+  anti-patterns of generated text.
+- `ERROR_MESSAGE_ORACLE.md` (`UX-ERR-`) governs the decisions made *before*
+  wording: whether a condition is reported at all, what severity class it is,
+  which surface it belongs on, and which of five layers each fact goes in.
+
+Where they overlap, the stricter governs and the later document names the
+`UI-TEXT-` rule it tightens. Nothing here is restated there.

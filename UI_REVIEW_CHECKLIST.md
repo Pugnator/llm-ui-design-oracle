@@ -1,7 +1,9 @@
 # UI Review Checklist
 
 Work through this against a proposed UI, a screenshot, or a diff. Answer each
-item **PASS**, **FAIL**, **N/A**, or **NEEDS HUMAN JUDGMENT**.
+item **PASS**, **FAIL**, **N/A**, or **NEEDS HUMAN JUDGMENT** — or **N/A
+(TOOLKIT)** where an enabled toolkit module states that the toolkit cannot
+implement the rule (`UI_ORACLE_CONTRACT.md` §5).
 
 Rules for using it honestly:
 
@@ -25,6 +27,11 @@ Rules for using it honestly:
 | 0.3 | Is this the primary repeated workflow, or occasional? | `UI-CMD-001` |
 
 If 0.1 cannot be answered, stop. Most of what follows depends on it.
+
+For a surface the profile classifies as `cli`, 0.1 is answered by the
+classification and the first question is instead the `cli` module's: is this
+output read by a person at a terminal, or by another program? Sections 1–11
+apply where they make sense; §12d is the form for the rest.
 
 ---
 
@@ -178,7 +185,7 @@ Cheap to check, and they catch problems the specific sections assume away.
 | 11.2 | Is repeating the last operation cheap? | `UI-EXP-002` |
 | 11.3 | Counting one loop: how much is the task, how much is overhead? | `UI-GLOBAL-004` |
 
-## 12. OCR-specific (all DERIVED — weigh accordingly)
+## 12. OCR-specific (module `ocr` — only when the profile opts in; all DERIVED)
 
 | # | Question | Rule |
 |---|---|---|
@@ -190,6 +197,22 @@ Cheap to check, and they catch problems the specific sections assume away.
 
 `UI-OCR-006` is retired. Review learning state only when the adopting project's
 profile defines a project-specific rule for it.
+
+## 12a. User-visible text — delegated
+
+Every string on the surface is governed by `UI_COPY_REVIEW_CHECKLIST.md`, which
+applies `UX_WRITING_ORACLE.md` and `ERROR_MESSAGE_ORACLE.md`. Run it, and
+record its result line here rather than duplicating its items.
+
+| # | Question | Rule |
+|---|---|---|
+| 12a.1 | Has the copy review been run, and is its result recorded? | `UX-TEXT-*`, `UX-ERR-*` |
+| 12a.2 | For each message on this surface: should it exist at all, and is its severity class and surface right? | `UX-ERR-001` … `UX-ERR-003` |
+| 12a.3 | Is `TERMINOLOGY.md` filled in for the concepts named here? | `UX-TEXT-017` |
+| 12a.4 | Does any primary copy carry implementation diagnostics? | `UX-ERR-012` |
+
+§12b below remains the sentence-level sweep for the `writing` module. It is
+not duplicated by the copy checklist; the two are cumulative.
 
 ## 12b. Writing (module `writing` — only when the profile opts in)
 
@@ -215,9 +238,84 @@ findings are usually the first thing an operator notices.
 | 12b.15 | Does any instruction say *click*, *tap*, *press* or *type* where a neutral verb would do? | `UI-TEXT-014` |
 | 12b.16 | After a state change, can the operator say what is now true without moving? Was obvious success announced anyway? | `UI-TEXT-015` |
 
+## 12c. Dear ImGui (module `imgui` — only when the profile opts in)
+
+Read the module's applicability table first: it says which core rules are
+reported `N/A (TOOLKIT)` and which are answered here instead.
+
+| # | Question | Rule |
+|---|---|---|
+| 12c.1 | Does the profile name the ImGui branch and version, and list the toolkit-limited rules as known non-conformance? | `UI-IMGUI-001` |
+| 12c.2 | Is `NavEnableKeyboard` set, and is no working window or needed item flagged `NoNavInputs`/`NoNav`? | `UI-IMGUI-002` |
+| 12c.3 | Tab through both themes: is the navigation cursor visible on every item, legible, and distinct from hover and selection? | `UI-IMGUI-003` |
+| 12c.4 | Across `SameLine` rows and tables, does Tab follow reading order? | `UI-IMGUI-004` |
+| 12c.5 | With the ID-conflict highlighter on, any popup on any screen? Do changing labels use `###`? | `UI-IMGUI-005` |
+| 12c.6 | Every modal: does Escape cancel, does Enter run a non-destructive default, is the default item focused? | `UI-IMGUI-006` |
+| 12c.7 | During the slowest operation, does the UI keep animating and does cancel respond? Any `ImGui::` call on a worker thread? | `UI-IMGUI-007` |
+| 12c.8 | Idle with nothing changing: is the process consuming as if busy? | `UI-IMGUI-008` |
+| 12c.9 | DPI awareness declared? Sharp at 200%? Any hard-coded pixel sizes in UI code? | `UI-IMGUI-009` |
+| 12c.10 | Which font file ships? Is the smallest rendered size at the lowest supported scale at or above the floor? | `UI-IMGUI-010` |
+| 12c.11 | Is there a persisted text-scale setting, and is every command reachable at 2.25× at minimum window size? | `UI-IMGUI-011` |
+| 12c.12 | Every icon-only control: does its tooltip appear from keyboard navigation? Does a disabled one say why? | `UI-IMGUI-012` |
+| 12c.13 | Are both palettes measured at 4.5:1 or better? Does the tool follow the OS theme, or at least offer the choice? | `UI-IMGUI-013` |
+| 12c.14 | Grep `IM_COL32` and `ImVec4(` in UI code: roles or literals? | `UI-IMGUI-014` |
+| 12c.15 | Where is the settings file written? Launch from another directory: same layout? Delete it and launch: the designed layout? | `UI-IMGUI-015` |
+| 12c.16 | Drag from empty space inside a pane: did the pane move? | `UI-IMGUI-016` |
+| 12c.17 | For each menu shortcut label, press the chord with the menu closed: does it run? | `UI-IMGUI-017` |
+| 12c.18 | Can an error's detail, an identifier or a path be copied without retyping? | `UI-IMGUI-018` |
+| 12c.19 | Focus a text field and type every hotkey letter: anything but text? | `UI-IMGUI-019` |
+| 12c.20 | If the profile lists a non-Latin script: IME at the caret, glyphs present, a literal checked with `DebugTextEncoding`? | `UI-IMGUI-020` |
+| 12c.21 | Release build: force a recoverable toolkit error. What does the operator see, and what is logged? | `UI-IMGUI-021` |
+
+## 12d. Command line (module `cli` — only when the profile opts in)
+
+**Run the checker first.** `python tools/cli_check.py --config <config> --
+<command>` decides most of this section automatically and prints its findings
+in the format below. The contract requires a clean run — zero FAIL — for a
+project that enables this module (§6). Work through the table for the items
+the checker reports as NEEDS HUMAN JUDGMENT, and to satisfy yourself that its
+config describes the real program.
+
+Automatic items name the check that decides them. Run everything twice where
+it matters: once in a terminal, once with stdin and stdout redirected.
+
+| # | Question | Rule | Check |
+|---|---|---|---|
+| 12d.1 | Zero on success, non-zero on every failure, distinct codes per failure mode, never an error count? | `UI-CLI-001` | `exit-*` |
+| 12d.2 | Product on stdout only, messaging on stderr only, a child's stderr passed through? | `UI-CLI-002` | `streams-*` |
+| 12d.3 | `-h`, `--help`, `help`, `help <sub>`, `<sub> --help`, and `--help` after other arguments — all print help on stdout and exit 0? | `UI-CLI-003` | `help-flags`, `help-anywhere`, `help-subcommand` |
+| 12d.4 | Bare invocation lists subcommands or prints concise help, never a default action and never a wait? | `UI-CLI-003` | `help-bare` |
+| 12d.5 | Help carries a usage line, every flag described, at least one example, and a bug address; all within 80 columns? | `UI-CLI-003` | `help-content`, `help-width` |
+| 12d.6 | `--version` prints `name version` on stdout, parses, ignores other arguments, exits 0? Is `-V` accepted? | `UI-CLI-004` | `version-*` |
+| 12d.7 | Every short option has a long form; conventional names carry conventional meanings; `--quiet`/`--silent` synonymous? | `UI-CLI-005` | `long-forms`, `standard-names`, `quiet-silent-synonym` |
+| 12d.8 | Options accepted in any order and after operands? Does the first `--` end option parsing? Is `-` stdin/stdout? | `UI-CLI-005` | `option-order`, `double-dash` |
+| 12d.9 | One kind of positional operand, two at most and justified, never three? Output files named by `-o`? | `UI-CLI-006` | `positionals` |
+| 12d.10 | Unknown option and unknown subcommand: non-zero, stderr only, nothing on stdout, no default action? | `UI-CLI-007` | `unknown-flag`, `unknown-subcommand` |
+| 12d.11 | Is a guessed correction suggested and *not* run? | `UI-CLI-007` | `suggestion`, `suggestion-not-run` |
+| 12d.12 | One record per line, no borders, `--json` valid, `--plain` where the layout breaks, `-q` present? Same content piped as on screen? | `UI-CLI-008` | `table-borders`, `json-*` |
+| 12d.13 | No escape codes when piped; `NO_COLOR`, `TERM=dumb` and `--no-color` honoured; no animation off a terminal? | `UI-CLI-009` | `no-ansi-piped`, `tty-*`, `accepts--no-color` |
+| 12d.14 | After a state-changing command: what is now true, and what to run next? | `UI-CLI-010` | manual |
+| 12d.15 | Error lines in the form `program: message`, lower case, no trailing period, naming the object and the system error? | `UI-CLI-011` | `error-prefix`, `error-no-trailing-period` |
+| 12d.16 | No log-level labels and no stack traces on stderr by default; the decisive line last; a trace file and a bug path for the unexpected? | `UI-CLI-011` | `no-log-level-labels`, `no-stack-trace` |
+| 12d.17 | Paging only when both stdin and stdout are a terminal, and never for one screenful? | `UI-CLI-012` | `no-pager-piped` |
+| 12d.18 | No prompt without a terminal; `--no-input` accepted; every prompt has a flag; passwords not echoed? | `UI-CLI-013` | `no-hang-without-terminal`, `accepts--no-input` |
+| 12d.19 | No secret taken as a flag value or from the environment? | `UI-CLI-014` | `secrets-in-flags` |
+| 12d.20 | Each destructive command: right grade, refuses unattended, has `--force`/`--confirm=<name>` and `--dry-run`? | `UI-CLI-015` | `destructive-*` |
+| 12d.21 | `--version` under 500 ms; something printed within 100 ms of starting slow work; a stall distinguishable from a crash? | `UI-CLI-016` | `startup-time`, `first-output` |
+| 12d.22 | Interrupt: immediate acknowledgement, prompt exit, clean-up timed out, a second interrupt forces and was advertised? | `UI-CLI-017` | `interrupt-*` |
+| 12d.23 | Same flag means the same everywhere; no catch-all; no arbitrary prefixes; no two similar names for different things? | `UI-CLI-018` | `no-catch-all`, `no-abbreviation`, `similar-names` |
+| 12d.24 | Nothing written to the working directory or beside the executable; per-user locations used; `TMPDIR` honoured? | `UI-CLI-019` | `no-stray-files` |
+| 12d.25 | Precedence flag > environment > project > user > system? Standard environment names honoured, not commandeered? | `UI-CLI-019` | manual |
+| 12d.26 | Against the recorded baseline: any subcommand, flag or key removed without a release that warned first? | `UI-CLI-020` | `baseline-diff` |
+| 12d.27 | Fresh install with a network monitor: any connection not caused by a command? | `UI-CLI-021` | manual |
+| 12d.28 | Name lower-case, two to nine characters, and behaviour independent of the name invoked? | `UI-CLI-022` | `name-*` |
+| 12d.29 | A very long line, NUL bytes and UTF-8 survive input and output without truncation? | `UI-CLI-023` | `long-line`, `utf8-*` |
+| 12d.30 | Posture map classifies the surface `cli`, the profile names the checker config, and the run is in the review log? | `UI-CLI-024` | manual |
+
 ## 13. Anti-pattern sweep
 
-Scan `UI_ANTIPATTERNS.md` AP-01…AP-26. For each one present, state the
+Scan `UI_ANTIPATTERNS.md` AP-01…AP-30, and `UX_WRITING_ORACLE.md` §E for
+AP-31…AP-39 (the generated-text patterns). For each one present, state the
 *condition* that makes it harmful here — or record it as acceptable with the
 reason. Presence alone is not a finding.
 
@@ -226,7 +324,7 @@ reason. Presence alone is not a finding.
 ## Reporting format
 
 ```
-FINDING  <rule-id>  <PASS|FAIL|N/A|NEEDS HUMAN JUDGMENT>
+FINDING  <rule-id>  <PASS|FAIL|N/A|N/A (TOOLKIT)|NEEDS HUMAN JUDGMENT>
 Surface  <which surface, and its posture>
 Class    <platform requirement | interaction principle | project convention>
 Verify   <VERIFIED | VERIFIED WITH QUALIFICATION | DERIVED | PROJECT-SPECIFIC>

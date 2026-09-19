@@ -13,10 +13,10 @@ Delete the guidance in *italics* as you go.
 | Field | Value |
 |---|---|
 | Project | `<name>` |
-| Oracle core version | `<from VERSION, e.g. 1.0.0>` |
+| Oracle core version | `<from VERSION, e.g. 4.0.0>` |
 | Profile version | `<your own, starts at 1.0.0>` |
-| Modules enabled | `<ocr, or none>` |
-| Conformance level | `Adopting` / `Core` / `Full` / `Accessibility-only` |
+| Modules enabled | `<any of ocr, writing, imgui, cli — or none>` |
+| Conformance level | `Adopting` / `Core` / `Full` / `Accessibility-only` — add `(toolkit-limited)` when a module reports N/A (TOOLKIT), contract §6 |
 | Last checklist run | `<date, or never>` |
 | Rule prefix | `<2–3 letters, e.g. KL->` |
 
@@ -30,7 +30,7 @@ Tier 1 rules become inapplicable and the review must know.*
 | Field | Value |
 |---|---|
 | Target OS | |
-| UI toolkit | |
+| UI toolkit | *name, branch and version. Dear ImGui: enable the `imgui` module — it lists the core rules the toolkit cannot meet* |
 | Minimum window size | |
 | Theme support | `light` / `dark` / `both` |
 | Primary input | |
@@ -46,7 +46,7 @@ table first. Surfaces missing from it cannot be reviewed.*
 
 | Surface | Posture | Notes |
 |---|---|---|
-| | `sovereign` / `transient` / `daemonic` | |
+| | `sovereign` / `transient` / `daemonic` / `cli` (module `cli`) | |
 
 ---
 
@@ -76,10 +76,18 @@ state that the core default applies.*
 | Core rule | Needs | This project |
 |---|---|---|
 | `UI-ERR-001` | A writing standard for on-screen text | `<path, or "core rule as written">` |
+| `UX-TEXT-001` | The product's register — professional tool, or warmer | `<declared register>` |
+| `UX-TEXT-016` | The declared audience for on-screen text | `<who reads this product's messages>` |
+| `UX-TEXT-014` | Project copy budgets, if tighter than the sourced ceilings | `<or "oracle defaults">` |
+| `UX-TEXT-017` | The controlled vocabulary | `TERMINOLOGY.md` Part 2 |
+| `UX-ERR-023` | The product's debugging surface, if any | `<verbose mode, diagnostics pane, log viewer>` |
 | `UI-COLOR-005` | Where semantic colour roles are defined | `<path>` |
 | `UI-TYPO-007` | Font families, incl. per-script | `<fonts>` |
 | `UI-ARCH-002` | Where workspace state is persisted | `<path or mechanism>` |
 | `UI-EXP-003` | Undo scope | `<what is undoable>` |
+| `UI-IMGUI-015` (module `imgui`) | Per-user settings path; default docking layout | `<path; ini or DockBuilder>` |
+| `UI-CLI-019` (module `cli`) | Configuration file locations and precedence | `<paths>` |
+| `UI-CLI-024` (module `cli`) | The `cli_check` config file, required by contract §6 | `<path to the JSON config>` |
 
 ---
 
@@ -101,7 +109,9 @@ undocumented deviation is a defect, a documented one is a decision.
 ## 7. Known non-conformance
 
 *Things that are simply wrong and not yet fixed. Distinct from a derogation: a
-derogation is a decision, this is a debt. Link issues.*
+derogation is a decision, this is a debt. Link issues. Rules an enabled
+toolkit module reports as `N/A (TOOLKIT)` are listed here too, citing the
+module (contract §5).*
 
 | Rule | Surface | Issue | Noted |
 |---|---|---|---|
@@ -112,3 +122,7 @@ derogation is a decision, this is a debt. Link issues.*
 
 | Date | Oracle version | Scope | Result | By |
 |---|---|---|---|---|
+
+*A project with an automated module enabled records its clean checker run
+here: date, checker version, oracle version, and the config used (contract
+§6).*

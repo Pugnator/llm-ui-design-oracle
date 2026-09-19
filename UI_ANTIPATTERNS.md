@@ -189,7 +189,7 @@ must hold the source in working memory — a few items at best.
 
 ## AP-11 — Mouse-only repetition
 
-**Looks like** The correction loop requires pointing, dragging or menu
+**Looks like** The primary loop requires pointing, dragging or menu
 traversal every iteration.
 
 **Fine when** The operation is genuinely occasional.
@@ -242,7 +242,7 @@ touch, leaves no trace in a screenshot, and requires knowing where to point.
 **Fine when** Colour is redundant with another channel.
 
 **Harmful when** Sole carrier. About 8% of men and 0.5% of women are red-green
-colourblind, and contrast checks *"do not account for hue perception"*.
+colourblind, and contrast evaluation *"does not account for hue perception"*.
 
 **Decided by** Microsoft Color; Johnson Ch. 4.
 
@@ -475,3 +475,101 @@ Progressive disclosure; Error codes); `CLIG` Errors; `GOVUK-DS` Details.
 **Rules** `UI-TEXT-002`, `UI-TEXT-006`, `UI-TEXT-008`, core `UI-ERR-001`.
 
 ---
+
+## AP-27 — The blocking frame
+
+**Looks like** A file open, a network call, a recogniser or a compile called
+from inside the frame. The whole window stops painting; the progress bar
+freezes; the cancel button is drawn but does nothing.
+
+**Fine when** Never in a product. Tolerable in a throwaway debug tool nobody
+else runs.
+
+**Harmful when** Any operation can exceed a frame. In immediate mode there is
+no separate painting path — *"if your code doesn't run the UI is gone!"* — so
+the freeze is total: `UI-FB-005` fails completely rather than partially, and
+`UI-FB-004`'s cancel cannot be reached.
+
+**Decided by** `IMGUI-CPP` (Programmer guide, Read first); `IMGUI-FAQ` (About
+Multi-Threading); Johnson Ch. 14.
+
+**Rules** `UI-IMGUI-007`, `UI-FB-004`, `UI-FB-005`.
+
+---
+
+## AP-28 — The colliding ID
+
+**Looks like** Two buttons labelled *Apply* in one window; a list of rows each
+with its own *Delete*; a control with an empty label; a label that changes
+with state.
+
+**Fine when** Never. The toolkit calls it *"THE MOST COMMON USER MISTAKE"*.
+
+**Harmful when** Always: *"Interacting with either button will trigger the
+first one"* — the wrong row is deleted, the second *Apply* applies the first
+thing. A changing label without `###` drops keyboard focus every time it
+changes, which is `AP-09` at the scale of one control.
+
+**Decided by** `IMGUI-FAQ` (About the ID Stack system); `IMGUI-H`
+(`ConfigDebugHighlightIdConflicts`).
+
+**Rules** `UI-IMGUI-005`, `UI-GLOBAL-005`, `UI-NAV-002`.
+
+---
+
+## AP-29 — The Christmas tree in the log
+
+**Looks like** A CI log full of escape codes; a progress bar rendered as a
+thousand lines of carriage-return frames; a spinner's characters interleaved
+with the output.
+
+**Fine when** The stream is an interactive terminal.
+
+**Harmful when** stdout is not a TTY, `NO_COLOR` is set, or `TERM` is `dumb`.
+The decoration was for a person who is not there; the person who is there —
+reading the log later — gets noise, and the machine reading the pipe gets
+bytes that are not data.
+
+**Decided by** `CLIG` Output (Disable color if…; If stdout is not an
+interactive terminal, don't display any animations); `12F-CLI` §6 ("You never
+want to output those codes to a file"); `HEROKU-CLI` (Colors).
+
+**Rules** `UI-CLI-009`, `UI-COLOR-003`.
+
+---
+
+## AP-30 — The mandatory prompt
+
+**Looks like** *Continue? [y/N]* with no flag that answers it; a password read
+only from the keyboard; a first-run wizard that cannot be skipped.
+
+**Fine when** stdin is a terminal *and* every value the prompt collects can
+also be passed as a flag.
+
+**Harmful when** The program is run from a script, a CI job or a pipe. It
+hangs, and the hang looks like a crash (`UI-FB-002`). A prompt that cannot be
+bypassed is a program that cannot be composed.
+
+**Decided by** `CLIG` Interactivity; Arguments and flags (Never require a
+prompt); `12F-CLI` §7 ("Never require a prompt though"); `HEROKU-CLI`
+(Prompting: "Ensure that args or flags can always be provided to bypass the
+prompt").
+
+**Rules** `UI-CLI-013`, `UI-CLI-015`, `UI-FB-002`.
+
+---
+
+## AP-31 … AP-39 — Anti-patterns of generated text
+
+Nine patterns a language model produces by default: narrative explanation,
+restating the obvious, internal reasoning shown, excessive consequences, fake
+helpfulness, unnecessary politeness, dramatic language, developer prose in the
+product, and documentation inside a dialog.
+
+They share this catalogue's numbering but are **defined in
+`UX_WRITING_ORACLE.md` §E**, with the source that rejects each one, a
+detection heuristic, the legitimate exception, and a before-and-after. They
+are not restated here, because a pattern described in two places drifts.
+
+A review sweeps them from `UI_COPY_REVIEW_CHECKLIST.md` §9, not from this
+file.

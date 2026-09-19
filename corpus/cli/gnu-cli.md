@@ -1,0 +1,24 @@
+<!-- source: https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html
+     fetched: 2026-09-19
+     licence: GNU Free Documentation License 1.3 or later, no Invariant Sections, no Front-Cover or Back-Cover Texts — https://www.gnu.org/prep/standards/standards.html (GNU Coding Standards, last updated as shown on the page)
+     title: GNU Coding Standards — Standards for Command Line Interfaces -->
+
+
+Next: Standards for Dynamic Plug-in Interfaces, Previous: Standards for Graphical Interfaces, Up: Program Behavior for All Programs [Contents][Index]
+
+### 4.8 Standards for Command Line Interfaces ¶
+
+It is a good idea to follow the POSIX guidelines for the command-line options of a program. The easiest way to do this is to use `getopt` to parse them. Note that the GNU version of `getopt` will normally permit options anywhere among the arguments unless the special argument ‘--’ is used. This is not what POSIX specifies; it is a GNU extension.
+
+Please define long-named options that are equivalent to the single-letter Unix-style options. We hope to make GNU more user friendly this way. This is easy to do with the GNU function `getopt_long`.
+
+One of the advantages of long-named options is that they can be consistent from program to program. For example, users should be able to expect the “verbose” option of any GNU program which has one, to be spelled precisely ‘--verbose’. To achieve this uniformity, look at the table of common long-option names when you choose the option names for your program (see Table of Long Options).
+
+It is usually a good idea for file names given as ordinary arguments to be input files only; any output files would be specified using options (preferably ‘-o’ or ‘--output’). Even if you allow an output file name as an ordinary argument for compatibility, try to provide an option as another way to specify it. This will lead to more consistency among GNU utilities, and fewer idiosyncrasies for users to remember.
+
+All programs should support two standard options: ‘--version’ and ‘--help’. CGI programs should accept these as command-line options, and also if given as the `PATH_INFO`; for instance, visiting ‘`http://example.org/p.cgi/--help`’ in a browser should output the same information as invoking ‘p.cgi --help’ from the command line.
+
+- --version
+- --help
+
+Next: Standards for Dynamic Plug-in Interfaces, Previous: Standards for Graphical Interfaces, Up: Program Behavior for All Programs [Contents][Index]
