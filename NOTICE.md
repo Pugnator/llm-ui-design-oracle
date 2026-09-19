@@ -27,6 +27,30 @@ If this repository is redistributed in a context with stricter requirements,
 check the current terms on the Microsoft Learn pages themselves; they are
 linked from every rule that uses them.
 
+## Archived writing guidance (`corpus/writing/`)
+
+The `writing` module was built by reading five bodies of guidance in full,
+and the text read is archived so the module's citations can be checked
+against what was actually read rather than against a live page that may have
+changed. Each file's header records its URL, the date it was fetched and its
+licence. They are:
+
+- **GOV.UK Design System** (ten component and pattern pages) and the
+  **GOV.UK writing guidelines** (six pages) — Crown copyright, [Open
+  Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/);
+  the design system's code is separately MIT. Reproduced with attribution as
+  the licence requires. Navigation chrome and the Nunjucks option tables
+  (API reference, not guidance) were removed; the guidance text is unaltered.
+- **Microsoft Learn** — the Windows-apps *Writing style* page, six Win32 UX
+  Guide pages and ten Microsoft Writing Style Guide pages — documentation
+  content under [CC BY 4.0](https://github.com/MicrosoftDocs/windows-dev-docs/blob/docs/LICENSE),
+  attributed by URL. Page chrome removed; text unaltered. Each header carries
+  the page's own `ms.date`.
+- **Command Line Interface Guidelines** (clig.dev), Aanand Prasad, Ben
+  Firshman, Carl Tashian and Eva Parish — [CC BY-SA 4.0](https://github.com/cli-guidelines/cli-guidelines/blob/main/LICENSE).
+  Reproduced whole, attributed. CC BY-SA's share-alike term applies to that
+  file; it does not extend to the original text of this repository.
+
 ## Books
 
 Three books inform the interaction-design rules:

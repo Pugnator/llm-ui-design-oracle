@@ -367,3 +367,106 @@ seconds when estimable; a spinner is for genuinely indeterminate brief work.
 The 10 s value remains explanatory evidence about context reconstruction.
 
 **Confidence** HIGH (direct correction against the local EPUB).
+
+## C13 — "Put the most important information at the end" vs. "lead with it"
+
+**Positions**
+
+- **Tier 2, `CLIG` Errors:** *"Consider where the user will look first. Put
+  the most important information at the end of the output."*
+- **Tier 1, `MS-WRITING`:** *"Lead with what's important … always present
+  the core of an idea before you add onto it."* **Tier 2, `GOVUK-WG`:** *"Put
+  the most important information first"*, the inverted pyramid. **Tier 3,
+  `WIN7-TEXT` UI Text:** the same inverted pyramid, and a measured scan order
+  in which static text is read last if at all.
+
+**Cause of the difference**
+
+The medium. Terminal output scrolls upward and the prompt returns at the
+bottom, so the last line is the one nearest the cursor and the one the eye
+lands on. A dialog does not scroll and the eye enters at the top left. Both
+sources are right about where their reader looks first.
+
+**Resolution**
+
+The module takes the GUI position for every surface it covers. `CLIG`'s
+rule is recorded here so a reviewer who knows it does not apply it to a
+dialog, and so a project with a terminal surface knows it exists. `UI-TEXT-001`
+orders a message *happened / means / do* from the top.
+
+**Confidence** HIGH. `CLIG` states its own scope ("if you are creating a GUI
+program, this guide is not for you").
+
+---
+
+## C14 — "Never say please or sorry" vs. "say them when it costs the operator"
+
+**Positions**
+
+- **Tier 2, `GOVUK-DS` Error message:** do not use *"please"* "because it
+  implies a choice"; do not use *"sorry"* "because it does not help fix the
+  problem". `GOVUK-WG`: "there's usually no need to say 'please'".
+- **Tier 3, `WIN7-TEXT` Style and Tone / Error Messages:** "limit please to
+  situations that inconvenience the user in some way" — waiting, repeating a
+  task; "use sorry only in error messages that result in serious problems for
+  the user (for example, data loss)". **Tier 1, `MS-WRITING`** carries the
+  same apologetic register in its own example: *"But don't worry — your
+  picture will be waiting"*.
+- And **`GOVUK-DS` itself**, on its "there is a problem with the service" and
+  "service unavailable" pages: the mandated H1 is *"Sorry, there is a problem
+  with the service"* — the case where the service, not the person, has
+  failed. The pattern's own research list includes "if people expect to see
+  please and sorry" as an open question.
+
+**Cause of the difference**
+
+Scope. GOV.UK's error-message rule is about **validation** — the person typed
+something the form will not take — and there an apology is misplaced and a
+"please" implies the field is optional. Win32's rule is about **every**
+message, and it reserves both words for the one case GOV.UK also uses
+"sorry": the software has cost the person something.
+
+**Resolution**
+
+`UI-TEXT-004`: neither word by default; *please* only where the operator is
+asked to bear an inconvenience the software caused; *sorry* only where they
+have lost something. Never as softening. This is consistent with every
+source's practice, including GOV.UK's.
+
+**Confidence** HIGH. The positions reconcile once the scope of each is read.
+
+---
+
+## C15 — "Active voice" vs. "passive to avoid blame"
+
+**Positions**
+
+- **Every source:** active voice. `MS-WRITING`: "throughout your app".
+  `GOVUK-WG`: "the active voice is more direct". `MS-STYLE` Verbs: "keep it
+  active whenever you can". `WIN7-TEXT` Style and Tone: "use the active voice".
+- **Every Microsoft source, in the same breath:** the passive when the user
+  is the subject of a mistake. `MS-STYLE` Verbs lists it first among the
+  passive's uses: "avoiding condescending text or blaming the customer,
+  especially in errors, warnings, or notifications". `WIN7-TEXT`: "use the
+  passive voice when the user is the subject and might feel blamed for the
+  error if the active voice were used". GOV.UK does not name the passive but
+  bans *"you forgot"* and requires "positive language", which lands in the
+  same place.
+
+**Cause of the difference**
+
+Not a conflict but a precedence question, and the sources do not say which
+rule wins when both apply. Left unstated, a reviewer can fail a blame-free
+passive sentence under the active-voice rule.
+
+**Resolution**
+
+`UI-TEXT-003` (no blame) takes precedence over `UI-TEXT-007` (active voice),
+and `UI-TEXT-007` says so in its text. Instructions are active and
+imperative; the statement of what went wrong is whichever voice does not
+make the operator its subject.
+
+**Confidence** HIGH. The Microsoft sources state the exception explicitly;
+the resolution only orders them.
+
+---

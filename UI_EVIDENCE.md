@@ -299,6 +299,73 @@ input. The system must expose correction and provenance rather than blame.
 `UI-ERR-002`, `UI-ERR-003`, `UI-OCR-004`. Confidence: HIGH for the recognition
 principle; MEDIUM for product-specific wording.
 
+## Question: What should a message say, and how?
+
+Added for 3.0.0 with the `writing` module. The evidence is the archived
+corpus under `corpus/writing/`; locations are section headings of the
+archived pages.
+
+### Local evidence
+
+- `WIN7-TEXT` Error Messages, "The characteristics of good error messages":
+  a problem, a cause, a solution; relevant, actionable, user-centered, brief,
+  clear, specific, courteous, rare. "Supplemental instructions": "aim for a
+  maximum of three sentences of moderate length." "Text › General": the
+  do-not-use list with replacements; "don't use phrasing that blames the
+  user"; "be specific … specific names, locations, and values"; "avoid the
+  word 'please' except …"; "use the word 'sorry' only …". "Commit buttons":
+  Close, not OK. "Progressive disclosure": details only when there is more
+  detail; "Error codes": always a text description as well.
+- `WIN7-TEXT` User Interface Text, "A design model for UI text": the scan
+  order, and "once users have decided what to do, they will immediately stop
+  reading and do it." "Use the inverted pyramid." "Punctuation",
+  "Capitalization", "Commit button labels" (the table).
+- `WIN7-TEXT` Style and Tone: tones to avoid; "use everyday words"; "be
+  consistent" with the *start/run/launch/boot/execute* example; the *please*
+  and *sorry* limits.
+- `WIN7-TEXT` Warning Messages, "Determine the appropriate message type": the
+  same condition phrased three ways; "don't use the terms 'warning' or
+  'caution' in the text". Confirmations, "Make confirmations require
+  thought": *anyway*, Yes/No. Notifications, "What to notify": not success,
+  with three exceptions.
+- `GOVUK-DS` Error message, "Be clear and concise", "Be consistent", "Be
+  specific", "Use instructions and descriptions", "Match up error messages to
+  labels". Error summary, "How it works": same wording in both places.
+  Details, "When (not) to use". Button, "How it works": sentence case,
+  describing the action. Problem-with-service pages: the mandated *"Sorry,
+  there is a problem with the service"* H1; no jargon, no red text.
+- `GOVUK-WG` Use clear language: literacy data; "the more educated the
+  person and the more specialist their knowledge, the greater their
+  preference for plain English"; 25 words, 5 sentences; active voice with
+  named exceptions. Use the right tone: the tone list; no *please*; no block
+  capitals. Create a clear structure: 20–28% read; frontload; active headings.
+- `MS-WRITING`: the three voice principles; "Lead with what's important";
+  "Emphasize action"; "Short and sweet" with the before/after; "Periods";
+  "Capitalization"; "Error messages"; "Dialogs" (call and response);
+  "Buttons".
+- `MS-STYLE` Top 10 tips; Capitalization; Verbs ("Active and passive voice"
+  table — passive to avoid blaming, first listed); Use simple words;
+  Scannable content; Describing interactions with the UI (the verb table);
+  Writing step-by-step instructions ("make sure that customers know where the
+  action should take place before you describe the action"); Numbers.
+- `CLIG` Errors: "catch errors and rewrite them for humans"; "signal-to-noise
+  ratio is crucial"; "put the most important information at the end" (C13).
+  Output: "if you change state, tell the user"; "suggest commands"; "don't
+  treat stderr like a log file"; debug output "only in verbose mode".
+
+### Interpretation
+
+Four media, one finding: a message is scanned, not read, and it is scanned
+for what to do. Every specific rule — order, length, words, voice, case,
+buttons — falls out of that. The sources disagree in three places, all
+resolved by reading their scope (C13, C14, C15). The Win32 material is
+retained for what a sentence says, not for how a Windows 7 dialog looked.
+
+### Oracle rules
+
+`UI-TEXT-001` … `UI-TEXT-015` (module `writing`); `UI-ERR-001` gains a
+binding. Confidence: HIGH throughout except `UI-TEXT-010`'s derived clause.
+
 ## Question: Which current Windows claims can the books verify?
 
 The books can corroborate interaction principles—keyboard access, visible
@@ -325,6 +392,26 @@ Statuses mean:
 
 The 2.0.0 audit leaves no active rule in the last three categories. This is not
 a claim that every rule is direct: derived rules remain visibly derived.
+
+### Module `writing` (3.0.0)
+
+| Rule | Verification | Evidence note |
+|---|---|---|
+| UI-TEXT-001 | VERIFIED | `WIN7-TEXT` problem/cause/solution and the three-sentence ceiling; `GOVUK-DS`, `MS-WRITING`, `MS-STYLE`, `CLIG` all state brevity and order |
+| UI-TEXT-002 | VERIFIED | `WIN7-TEXT` "be specific" with the counter-examples; `GOVUK-DS` "be specific" with its own; `MS-STYLE` before/after |
+| UI-TEXT-003 | VERIFIED | The word list is `WIN7-TEXT`'s and `GOVUK-DS`'s verbatim; the passive-to-avoid-blame clause is `MS-STYLE` Verbs and `WIN7-TEXT` |
+| UI-TEXT-004 | VERIFIED WITH QUALIFICATION | Reconciles `GOVUK-DS` (never) with `WIN7-TEXT` (when it costs the operator) via GOV.UK's own practice; see C14 |
+| UI-TEXT-005 | VERIFIED | `WIN7-TEXT` three-phrasings example and "icons should always match"; `GOVUK-DS` scope of error messages |
+| UI-TEXT-006 | VERIFIED | `GOVUK-WG` specialist finding; `MS-STYLE` word table; `WIN7-TEXT` real-world language |
+| UI-TEXT-007 | VERIFIED WITH QUALIFICATION | Active/present/imperative from four sources; qualified by the C15 precedence |
+| UI-TEXT-008 | VERIFIED | `WIN7-TEXT` progressive disclosure and error codes; `GOVUK-DS` Details; `CLIG` debug output |
+| UI-TEXT-009 | VERIFIED WITH QUALIFICATION | `MS-STYLE` and `MS-WRITING` current; `WIN7-TEXT`'s title-case-for-titles exception superseded by `MS-STYLE` and noted |
+| UI-TEXT-010 | VERIFIED WITH QUALIFICATION | Numerals, units, leading zero from `MS-STYLE` Numbers; the notation clause is DERIVED and marked MEDIUM |
+| UI-TEXT-011 | VERIFIED | `WIN7-TEXT` names log files as a presentation for IT professionals; `CLIG` stderr/verbose |
+| UI-TEXT-012 | VERIFIED | `MS-WRITING` call and response; `WIN7-TEXT` commit-button table and Close-not-OK; `GOVUK-DS` Button |
+| UI-TEXT-013 | VERIFIED | `GOVUK-DS` error summary and message must match; `WIN7-TEXT` and `MS-STYLE` one term per concept |
+| UI-TEXT-014 | VERIFIED | `MS-STYLE` verb table; place-before-action from `MS-STYLE` and `WIN7-TEXT` |
+| UI-TEXT-015 | VERIFIED | `CLIG` say what changed; `WIN7-TEXT` Notifications on not announcing success |
 
 ### Core rules
 

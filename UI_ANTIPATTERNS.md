@@ -388,3 +388,90 @@ rule; Cooper Ch. 9 posture; `MS-COMMAND` command placement. Rounded corners or
 the visual fashion alone are not a finding.
 
 **Rules** `UI-NAV-001`, `UI-CMD-001`, `UI-CMD-003`, `UI-LAY-003`.
+
+## AP-23 — The wall of text
+
+**Looks like** A message of four or more sentences. Often each sentence is
+individually true and well meant: what happened, why, what it means, what to
+do, what not to worry about, what to try next.
+
+**Fine when** In a help topic the operator chose to open.
+
+**Harmful when** In a message, dialog, tooltip or status line. Win32 UI Text:
+"too much text discourages reading; the eye tends to skip right over it —
+ironically resulting in less communication rather than more." The reader
+stops at the first sentence that lets them decide, and if the action was in
+the fourth they never reach it.
+
+**Decided by** `WIN7-TEXT` Error Messages ("brief — as short as possible, but
+no shorter"; "aim for a maximum of three sentences"); `GOVUK-WG` (20–28% of
+words read); `MS-STYLE` ("prune every excess word").
+
+**Rules** `UI-TEXT-001`, `UI-TEXT-008`.
+
+---
+
+## AP-24 — The verdict word
+
+**Looks like** *Error*, *invalid*, *illegal*, *failed*, *fatal*, *forbidden*,
+*bad* — or a sentence with the operator as the subject of a mistake: *"You
+entered…"*, *"You forgot…"*.
+
+**Fine when** Never on screen. In a log file, *error* is a level and is fine.
+
+**Harmful when** Shown to the person who just did the thing. Each word is
+either redundant (the icon and the container already say it is a problem) or
+an accusation, and the sources agree that an accused reader learns nothing
+except to dismiss the next message faster.
+
+**Decided by** `WIN7-TEXT` Error Messages (the word list and its
+replacements); `GOVUK-DS` Error message ("forbidden, illegal, you forgot,
+prohibited"; "valid and invalid … do not add anything"); `MS-STYLE` Verbs.
+
+**Rules** `UI-TEXT-003`, core `UI-ERR-002`, `UI-ERR-003`.
+
+---
+
+## AP-25 — The apology as tone
+
+**Looks like** *Sorry* or *please* in a message where nothing has been lost
+and nothing inconvenient is being asked. *"Sorry, that value is out of
+range."* *"Please select a file."*
+
+**Fine when** Data was lost, the operator must wait or redo work, or the
+software is at fault and the cost is real — the cases every source reserves
+the words for.
+
+**Harmful when** Used to soften. GOV.UK: *please* "implies a choice" — the
+field now reads as optional; *sorry* "does not help fix the problem". Used
+routinely, both words spend the register that a genuine loss will later need.
+
+**Decided by** `GOVUK-DS` Error message; `WIN7-TEXT` Style and Tone;
+`UI_CONFLICTS.md` C14.
+
+**Rules** `UI-TEXT-004`.
+
+---
+
+## AP-26 — The transport as the message
+
+**Looks like** The underlying library's own words on the face of a dialog:
+*"PassThruWriteMsgs(ISO15765): ERR_TIMEOUT"*, *"ECONNREFUSED"*, *"could not
+disarm before populating"*. Often accurate. Never addressed to the reader.
+
+**Fine when** Behind a disclosure control, in the log file, or in a bug
+report — every place where the reader is someone who can act on it.
+
+**Harmful when** It is what the operator is given instead of a sentence.
+Win32 names the leading cause: "explaining the problem from the code's point
+of view instead of the user's". `CLIG`: "catch errors and rewrite them for
+humans". It differs from AP-17 in what it is — AP-17 explains the
+implementation, this quotes it — and the fix is the same: keep it, fold it,
+write the message.
+
+**Decided by** `WIN7-TEXT` Error Messages (Incomprehensible error messages;
+Progressive disclosure; Error codes); `CLIG` Errors; `GOVUK-DS` Details.
+
+**Rules** `UI-TEXT-002`, `UI-TEXT-006`, `UI-TEXT-008`, core `UI-ERR-001`.
+
+---

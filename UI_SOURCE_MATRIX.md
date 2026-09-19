@@ -41,6 +41,22 @@ date.
 | `MS-COMMAND` | [Commanding basics](https://learn.microsoft.com/en-us/windows/apps/design/basics/commanding-basics) | Last updated 2022-08-01; rechecked 2026-09-18 | 1 | Command placement, direct manipulation, confirm vs undo | Older page with consumer-flavoured examples; little expert-keyboard detail |
 | `FLUENT2-WIN` | [Fluent 2 Windows overview](https://fluent2.microsoft.design/components/windows) | Rechecked 2026-09-18 | — | Directs Windows designers to WinUI components and resources | Overview only; contains no component guidance from which to derive a rule |
 
+## Writing sources — local snapshots, module `writing`
+
+Added for 3.0.0. Unlike the platform pages above, these **are** archived:
+each page was fetched on 2026-09-19, converted to text and stored under
+`corpus/writing/` with its URL, fetch date and licence in the file header.
+`Verified` here means the archived text was read in full.
+
+| ID | Source | Recorded version/date and verification | Tier | Strong on | Limit |
+|---|---|---|---|---|---|
+| `GOVUK-DS` | [GOV.UK Design System](https://design-system.service.gov.uk/) — components *error message*, *error summary*, *notification banner*, *warning text*, *details*, *button*; patterns *validation*, *there is a problem with the service*, *service unavailable*, *confirmation pages*. Open Government Licence v3.0 | Live site, no version shown; fetched 2026-09-19; all ten pages read | 2 | The most specific rules on error wording anywhere in the corpus, and the only ones with reported user research behind them | A web service for the public; form-validation framing; nothing on desktop dialogs or status bars |
+| `GOVUK-WG` | [GOV.UK writing guidelines](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/writing-guidelines/) — *clear language*, *right tone*, *clear structure*, *clear titles*, *summaries*, *meet user needs*. Open Government Licence v3.0. (The former `gov.uk/guidance/content-design/writing-for-gov-uk` redirects here) | Fetched 2026-09-19; six pages read | 2 | Plain-English mandate with literacy data; specialists prefer plain English; frontloading; sentence and paragraph ceilings | Web publishing, not application UI; the A–Z style guide it points to was not read |
+| `MS-WRITING` | [Writing style — Windows apps](https://learn.microsoft.com/en-us/windows/apps/design/style/writing-style). CC BY 4.0 | `ms.date` 2020-09-24, page shows "last updated 2021-06-24"; fetched 2026-09-19 | 1 | Voice principles; lead with what matters; active voice; dialog "call and response"; button text | Short; examples are consumer-app flavoured |
+| `WIN7-TEXT` | Win32 UX Guide — [Error Messages](https://learn.microsoft.com/en-us/windows/win32/uxguide/mess-error), [Warning Messages](https://learn.microsoft.com/en-us/windows/win32/uxguide/mess-warn), [Confirmations](https://learn.microsoft.com/en-us/windows/win32/uxguide/mess-confirm), [Notifications](https://learn.microsoft.com/en-us/windows/win32/uxguide/mess-notif), [User Interface Text](https://learn.microsoft.com/en-us/windows/win32/uxguide/text-ui), [Style and Tone](https://learn.microsoft.com/en-us/windows/win32/uxguide/text-style-tone). CC BY 4.0 | Each page self-identifies as Windows 7 guidance; `ms.date` 2020-10-20 / 2022-01-11; fetched 2026-09-19; all six read | 3 | The anatomy of a message; the scan order; the word list; commit-button semantics; progressive disclosure | `STILL_VALID_INTERACTION_PRINCIPLE` for what a sentence should say; `VISUALLY_OBSOLETE` for task-dialog layout, fonts, colours and icons, none of which the module uses |
+| `MS-STYLE` | [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/) — *top 10 tips*, *brand voice*, *use simple words*, *capitalization*, *verbs*, *scannable content*, *describing interactions with the UI*, *numbers*, *writing step-by-step instructions*, *bias-free communication*. CC BY 4.0 | `ms.date` 2018-01-19 to 2026-07-02 per page; fetched 2026-09-19; ten pages read | 1 | Sentence case; passive to avoid blame; input-neutral verbs; numerals in UI; parallel structure | Documentation-first; the A–Z word list was not read |
+| `CLIG` | [Command Line Interface Guidelines](https://clig.dev/), Prasad, Firshman, Tashian, Parish. CC BY-SA 4.0 | Live page, no version; fetched 2026-09-19; read in full | 2 | Rewrite errors for humans; signal-to-noise; say what changed; suggest the next step; debug output only when asked | Written for the terminal and says so; "most important information at the end" does not transfer (`C13`) |
+
 ## Legacy Windows source
 
 | ID | Source | Verified | Classification and use |
@@ -68,12 +84,20 @@ appearance.
    specification, high-contrast behavior, or screen-reader test procedure.
 3. No verified spacing scale, pointer/touch target minimum, corner radii,
    material/elevation values, motion durations, or non-text contrast ratio.
-4. No source in the corpus studies OCR correction UI, confidence calibration,
+4. No source read gives a single length ceiling for a dialog. Win32 gives
+   one sentence for the main instruction and three for the supplement;
+   GOV.UK gives 25 words a sentence and 5 sentences a paragraph for web
+   text; Win32 Notifications gives 48/200 characters. The `writing` module
+   quotes each where it applies and does not invent a general number.
+5. No source read discusses scientific notation in a displayed value.
+   `UI-TEXT-010`'s last clause is derived from the plain-words rule and is
+   marked MEDIUM.
+6. No source in the corpus studies OCR correction UI, confidence calibration,
    Japanese segmentation, learning-state presentation or assistive-technology
    behavior for image-text correspondence. OCR rules remain explicit transfers.
-5. No empirical source establishes an optimal pane count or universal density.
+7. No empirical source establishes an optimal pane count or universal density.
    Density must be chosen from task simultaneity, frequency, posture and measured
    legibility—not a fashion or a fixed number.
-6. No source justifies a universal ban or mandate for cards, rounded corners,
+8. No source justifies a universal ban or mandate for cards, rounded corners,
    giant headers, floating action buttons, bottom navigation or animation. The
    oracle may reject them only when a task/rule conflict is demonstrated.

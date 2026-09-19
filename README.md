@@ -3,8 +3,8 @@
 A versioned, self-contained rule set for **Windows desktop application UI**,
 written to be shared between projects and cited by rule ID.
 
-**Version 2.0.0** (`VERSION`). 81 core rules, 5 active OCR module rules plus 1
-retired ID, and 22 anti-patterns.
+**Version 3.0.0** (`VERSION`). 81 core rules, two modules — 5 active OCR
+rules plus 1 retired ID, and 15 writing rules — and 26 anti-patterns.
 
 ---
 
@@ -33,7 +33,8 @@ own profile.
 | `UI_CONFLICTS.md` | Where sources disagree and how it was resolved | Core only |
 | `UI_ANTIPATTERNS.md` | Review catalogue, each with the condition that makes it harmful | Core only |
 | `UI_REVIEW_CHECKLIST.md` | The review form | Core only |
-| `modules/<id>.md` | Optional domain rules | Core only |
+| `modules/<id>.md` | Optional domain rules — `ocr`, and `writing` for the words on screen | Core only |
+| `corpus/<module>/` | Archived text of sources a module was built from, with URL, date and licence per file | Core only |
 | `img/*.svg` | Figures, generated locally, theme-aware | Core only |
 | `VERSION` | Semantic version of the core | Core only |
 | `UI_PROFILE.template.md` | Starting point for an adopting project | Copy it |

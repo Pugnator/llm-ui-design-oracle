@@ -1344,6 +1344,13 @@ Text in Apps and Websites is Unnecessary."*
 profile (§5 of `UI_PROFILE.md`). Where it does, that standard governs and this
 rule defers to it. Where it does not, this rule applies as written.
 
+Since 3.0.0 there is a standard to name: the `writing` module
+(`modules/writing.md`, rules `UI-TEXT-001` to `UI-TEXT-015`), built from the
+GOV.UK Design System, the Windows writing-style guidance, the Win32 message
+guidelines, the Microsoft Writing Style Guide and clig.dev. A project that
+lists `writing` under `modules` binds this rule to it. `UI-TEXT-001` is the
+operative form of this rule there — the same three parts, with a ceiling.
+
 **Sources.** Guidelines overview (Writing); Johnson Ch. 6.
 
 **Review test.** Does the message state a result or an action? Remove every
@@ -1860,6 +1867,7 @@ project opts into them through its profile.
 | Module | ID | Rule prefix | Covers |
 |---|---|---|---|
 | OCR and text recognition | `ocr` | `UI-OCR-` | Correspondence between image, region, recognised text, token and lookup; correction workflows; confidence display |
+| Writing | `writing` | `UI-TEXT-` | What a message says and in what order; the words to avoid; voice, case and punctuation; where detail goes; dialog titles and buttons; the same words for the same problem everywhere |
 
 A module MUST NOT weaken a core rule. It MAY add rules, and MAY make a core
 SHOULD into a MUST for its domain — tightening is always allowed, loosening

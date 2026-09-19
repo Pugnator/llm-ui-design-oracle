@@ -82,6 +82,7 @@ So that two projects can extend the oracle without colliding.
 |---|---|---|
 | `UI-GLOBAL-`, `UI-ARCH-`, `UI-NAV-`, `UI-LAY-`, `UI-CMD-`, `UI-SEL-`, `UI-EDIT-`, `UI-KBD-`, `UI-MOUSE-`, `UI-FB-`, `UI-DLG-`, `UI-ERR-`, `UI-TYPO-`, `UI-ICON-`, `UI-COLOR-`, `UI-A11Y-`, `UI-MODE-`, `UI-EXP-` | **Core only** | Project-neutral rules |
 | `UI-OCR-` | Module `ocr` | Domain rules |
+| `UI-TEXT-` | Module `writing` | The words on the screen: messages, labels, buttons, status text |
 | `AP-` | Core anti-patterns | — |
 | `<PROJECT>-` e.g. `KL-` | The adopting project | Project conventions, in the profile |
 

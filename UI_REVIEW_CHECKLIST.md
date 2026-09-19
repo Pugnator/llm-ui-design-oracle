@@ -191,9 +191,33 @@ Cheap to check, and they catch problems the specific sections assume away.
 `UI-OCR-006` is retired. Review learning state only when the adopting project's
 profile defines a project-specific rule for it.
 
+## 12b. Writing (module `writing` — only when the profile opts in)
+
+Read every string the surface shows. These are cheap to check and the
+findings are usually the first thing an operator notices.
+
+| # | Question | Rule |
+|---|---|---|
+| 12b.1 | Does each problem message say what happened, what it means, what to do — and nothing else? Count the sentences | `UI-TEXT-001` |
+| 12b.2 | Does it name the specific object, value or cause, where the program knows it? | `UI-TEXT-002` |
+| 12b.3 | Search the strings for *error, invalid, illegal, failed, fatal, forbidden, bad*. Any hit is a finding | `UI-TEXT-003` |
+| 12b.4 | Is the operator ever the grammatical subject of a mistake? | `UI-TEXT-003` |
+| 12b.5 | For each *please*: what inconvenience? For each *sorry*: what loss? | `UI-TEXT-004` |
+| 12b.6 | With the icon covered, can you tell a problem from a warning from a question? Uncovered, do they agree? | `UI-TEXT-005` |
+| 12b.7 | Read it aloud to someone outside the project. Which words would they not say? | `UI-TEXT-006` |
+| 12b.8 | Is the verb first, present, and the instruction imperative? | `UI-TEXT-007` |
+| 12b.9 | Is the transport's own text folded away, and does the fold reveal something new? | `UI-TEXT-008` |
+| 12b.10 | Sentence case; full stop on sentences only; no capitals for emphasis; no exclamation marks | `UI-TEXT-009` |
+| 12b.11 | Would each number, as written, appear on an instrument for that quantity? | `UI-TEXT-010` |
+| 12b.12 | Is the on-screen string the same string as the log line for the same event? If so, which reader is short-changed? | `UI-TEXT-011` |
+| 12b.13 | Do the buttons answer the title? Is *OK* dismissing a problem? | `UI-TEXT-012` |
+| 12b.14 | One condition, every place it is reported — diff the strings | `UI-TEXT-013` |
+| 12b.15 | Does any instruction say *click*, *tap*, *press* or *type* where a neutral verb would do? | `UI-TEXT-014` |
+| 12b.16 | After a state change, can the operator say what is now true without moving? Was obvious success announced anyway? | `UI-TEXT-015` |
+
 ## 13. Anti-pattern sweep
 
-Scan `UI_ANTIPATTERNS.md` AP-01…AP-20. For each one present, state the
+Scan `UI_ANTIPATTERNS.md` AP-01…AP-26. For each one present, state the
 *condition* that makes it harmful here — or record it as acceptable with the
 reason. Presence alone is not a finding.
 
